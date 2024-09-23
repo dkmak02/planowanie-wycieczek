@@ -1,12 +1,29 @@
-const Sidebar = () => {
-    return (
-      <aside className="sidebar">
+import React from 'react';
+import './Sidebar.css'; // Ensure this is the correct path to your CSS
+
+const Sidebar = ({ markers, onDelete, onMoveToTop, onCalculatePath }) => {
+  return (
+    <div className="sidebar">
+      <h2>Markers</h2>
+      <div className="marker-list">
         <ul>
-          <li>place</li>
-          <li>for</li>
-          <li>markers</li>
+          {markers.map((marker, index) => (
+            <li 
+              key={index} 
+              className={index === 0 ? 'marker-highlight' : ''} // Highlight the first marker
+              onClick={() => onMoveToTop(index)} // Move to top on click
+            >
+              Marker at [{marker.lat.toFixed(2)}, {marker.lng.toFixed(2)}]
+              <button onClick={(e) => { e.stopPropagation(); onDelete(index); }}>Delete</button>
+            </li>
+          ))}
         </ul>
-      </aside>
-    );
-  };
+      </div>
+      {markers.length >= 2 && (
+        <button onClick={onCalculatePath} className="calculate-button">Calculate Path</button>
+      )}
+    </div>
+  );
+};
+
 export default Sidebar;

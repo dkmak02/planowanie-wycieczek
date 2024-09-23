@@ -16,6 +16,7 @@ body, html {
   flex-direction: column;
   height: 100vh;
 }
+/* Add this to your CSS file */
 
 /* Navbar Styling */
 .navbar {
@@ -30,28 +31,26 @@ body, html {
 .content {
   display: flex;
   flex: 1;
-  height: calc(100vh - 60px); /* 100% height minus navbar */
 }
 
-/* Sidebar Styling */
-.sidebar {
-  width: 200px;
-  background-color: #f4f4f4;
-  padding: 1rem;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* In case of long content, make it scrollable */
-}
+
 
 /* Sidebar List Styling */
 .sidebar ul {
-  list-style-type: none;
   padding: 0;
-  margin: 0;
 }
 
 .sidebar li {
   margin: 1rem 0;
-  font-size: 1.1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.sidebar li:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
 }
 
 /* Main Section Styling */
@@ -59,13 +58,23 @@ body, html {
   flex: 1;
   padding: 1rem;
   background-color: #fff;
-  overflow-y: auto; /* Allows scrolling in case of a long content */
 }
 
 /* Headings inside Main Section */
 .main-section h2 {
   margin-top: 0;
 }
+.sidebar button {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.sidebar li.marker-highlight {
+  background-color: #d1e7dd; /* Different background for the first marker */
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
