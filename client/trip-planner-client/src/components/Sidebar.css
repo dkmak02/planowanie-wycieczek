@@ -1,35 +1,23 @@
+/* Sidebar.css */
 .sidebar {
-  width: 400px;
+  width: 400px;                    
   background-color: #f4f4f4;
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  max-height: 100vh;
+  max-height: calc(100vh - 50px);  
 }
 
 .marker-list {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 1rem;
+  flex: 1;                        
+  overflow-y: auto;                /* Enable vertical scrolling */
 }
-  
+
 .marker-list ul {
   list-style-type: none;
   padding: 0;
 }
 
-.marker-list li {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-  margin-bottom: 0.5rem;
-}
-
-.marker-list li.marker-highlight {
-  background-color: #d1e7dd;
-}
-  
 .calculate-button {
   padding: 0.5rem;
   background-color: #007bff;
@@ -39,10 +27,9 @@
   cursor: pointer;
   align-self: center;
   width: calc(100% - 2rem);
-  margin-top: auto;
+  margin-top: auto;               /* Push button to bottom */
 }
 
 .calculate-button:hover {
   background-color: #0056b3;
 }
-  

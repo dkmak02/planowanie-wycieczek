@@ -19,7 +19,7 @@ const customIcon = L.icon({
 });
 
 const firstMarkerIcon = L.icon({
-  iconUrl: "/first_marker_icon.png",
+  iconUrl: "/map_starter_marker.png",
   iconSize: [38, 38],
   iconAnchor: [19, 38],
   popupAnchor: [0, -38],
@@ -107,36 +107,39 @@ const MapSection = () => {
         onDelete={handleDeleteMarker}
         onMoveToTop={handleMoveToTop}
       />
-      <MapContainer
-        center={position}
-        zoom={13}
-        scrollWheelZoom={true}
-        style={{ height: "calc(100% - 50px)", width: "100%" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MapClickHandler onMapClick={handleMapClick} />
-        {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={[marker.lat, marker.lng]}
-            icon={index === 0 ? firstMarkerIcon : customIcon}
-          >
-            <Popup>
-              {marker.name
-                ? marker.name
-                : `Marker at [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(
-                    2
-                  )}]`}
-              <br />
-              <button onClick={() => handleDeleteMarker(index)}>Delete</button>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-
+      <div className="map-container">
+        <MapContainer
+          center={position}
+          zoom={13}
+          scrollWheelZoom={true}
+          style={{ height: "100vh" }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MapClickHandler onMapClick={handleMapClick} />
+          {markers.map((marker, index) => (
+            <Marker
+              key={index}
+              position={[marker.lat, marker.lng]}
+              icon={index === 0 ? firstMarkerIcon : customIcon}
+            >
+              <Popup>
+                {marker.name
+                  ? marker.name
+                  : `Marker at [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(
+                      2
+                    )}]`}
+                <br />
+                <button onClick={() => handleDeleteMarker(index)}>
+                  Delete
+                </button>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
       {showForm && (
         <MarkerForm
           markerName={markerName}

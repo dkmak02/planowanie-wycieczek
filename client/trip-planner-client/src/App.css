@@ -1,3 +1,4 @@
+/* App.css */
 /* Reset some default browser styles */
 * {
   margin: 0;
@@ -8,87 +9,19 @@
 body, html {
   height: 100%;
   font-family: Arial, sans-serif;
+  overflow: hidden; /* Prevent body scrolling */
 }
 
 /* Ensure the app fills the viewport */
 .App {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-}
-/* Add this to your CSS file */
-
-/* Navbar Styling */
-.navbar {
-  background-color: #333;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-  font-size: 1.5rem;
+  height: 100%; /* Fill the entire height */
 }
 
 /* Main Content Styling */
 .content {
   display: flex;
   flex: 1;
-}
-
-
-
-/* Sidebar List Styling */
-.sidebar ul {
-  padding: 0;
-}
-
-.sidebar li {
-  margin: 1rem 0;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-}
-
-.sidebar li:hover {
-  background-color: #e6e6e6;
-  cursor: pointer;
-}
-
-/* Main Section Styling */
-.main-section {
-  flex: 1;
-  padding: 1rem;
-  background-color: #fff;
-}
-
-/* Headings inside Main Section */
-.main-section h2 {
-  margin-top: 0;
-}
-.sidebar button {
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.sidebar li.marker-highlight {
-  background-color: #d1e7dd; /* Different background for the first marker */
-  padding: 0.5rem;
-  border-radius: 4px;
-}
-
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .content {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    box-shadow: none;
-  }
-
-  .main-section {
-    padding: 1rem;
-  }
+  height: calc(100% - 50px); /* Full height minus navbar */
 }

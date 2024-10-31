@@ -1,15 +1,10 @@
-/* MapSection.css */
-
 .content {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 50px); 
 }
 
 .map-container {
-  flex: 1;
+  flex: 1; 
   position: relative;
-}
-
-.calculate-button:hover {
-  background-color: #0056b3;
+  overflow: hidden; 
 }
