@@ -1,0 +1,15 @@
+/* MapSection.css */
+
+.content {
+  display: flex;
+  height: 100vh;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+}
+
+.calculate-button:hover {
+  background-color: #0056b3;
+}

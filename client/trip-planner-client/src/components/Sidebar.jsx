@@ -8,19 +8,28 @@ const Sidebar = ({ markers, onDelete, onMoveToTop, onCalculatePath }) => {
       <div className="marker-list">
         <ul>
           {markers.map((marker, index) => (
-            <li 
-              key={index} 
-              className={index === 0 ? 'marker-highlight' : ''} // Highlight the first marker
+            <li
+              key={index}
+              className={index === 0 ? "marker-highlight" : ""} // Highlight the first marker
               onClick={() => onMoveToTop(index)} // Move to top on click
             >
-              Marker at [{marker.lat.toFixed(2)}, {marker.lng.toFixed(2)}]
-              <button onClick={(e) => { e.stopPropagation(); onDelete(index); }}>Delete</button>
+              Place: {marker.name}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(index);
+                }}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
       </div>
       {markers.length >= 2 && (
-        <button onClick={onCalculatePath} className="calculate-button">Calculate Path</button>
+        <button onClick={onCalculatePath} className="calculate-button">
+          Calculate Path
+        </button>
       )}
     </div>
   );
