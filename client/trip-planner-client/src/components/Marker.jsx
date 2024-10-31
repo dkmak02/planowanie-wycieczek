@@ -2,9 +2,12 @@
 import React from "react";
 import "./Marker.css"; // Ensure this file exists for styling
 
-const Marker = ({ index, name, onDelete, isActive }) => {
+const Marker = ({ index, name, onDelete, isActive, onClick }) => {
   return (
-    <li className={`marker ${isActive ? "marker-active" : ""}`}>
+    <li
+      className={`marker ${isActive ? "marker-active" : ""}`}
+      onClick={onClick}
+    >
       <div className="marker-content">
         <span className="marker-text">{name}</span>
         <div className="marker-actions">

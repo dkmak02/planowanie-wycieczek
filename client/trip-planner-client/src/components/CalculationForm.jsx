@@ -7,24 +7,19 @@ const CalculationForm = ({ onCalculate, onClose }) => {
 
   const handleMaxHoursChange = (e) => {
     const value = e.target.value;
-
-    // Check if value is empty or a valid number between 0 and 24
-    if (value === "" || (value >= 0 && value <= 24)) {
+    if (value === "" || (value >= 1 && value <= 24)) {
       setMaxHours(value);
     }
   };
 
   const handleMaxDaysChange = (e) => {
     const value = e.target.value;
-
-    // Check if value is empty or a valid non-negative number
-    if (value === "" || (value >= 0 && value <= 365)) {
+    if (value === "" || (value >= 1 && value <= 365)) {
       setMaxDays(value);
     }
   };
 
   const handleKeyDown = (e) => {
-    // Prevent negative sign and any non-numeric input
     if (e.key === "-" || e.key === "e" || e.key === "E") {
       e.preventDefault();
     }
@@ -32,9 +27,8 @@ const CalculationForm = ({ onCalculate, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call the onCalculate function with valid values
     onCalculate(maxHours, maxDays);
-    onClose(); // Close the form after calculation
+    onClose();
   };
 
   return (
@@ -48,9 +42,10 @@ const CalculationForm = ({ onCalculate, onClose }) => {
               type="number"
               value={maxHours}
               onChange={handleMaxHoursChange}
-              onKeyDown={handleKeyDown} // Block negative sign and non-numeric input
-              min="0"
+              onKeyDown={handleKeyDown}
+              min="1"
               max="24"
+              required
             />
           </label>
         </div>
@@ -61,9 +56,10 @@ const CalculationForm = ({ onCalculate, onClose }) => {
               type="number"
               value={maxDays}
               onChange={handleMaxDaysChange}
-              onKeyDown={handleKeyDown} // Block negative sign and non-numeric input
-              min="0"
+              onKeyDown={handleKeyDown}
+              min="1"
               max="365"
+              required
             />
           </label>
         </div>

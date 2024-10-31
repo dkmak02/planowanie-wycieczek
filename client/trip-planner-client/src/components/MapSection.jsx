@@ -5,6 +5,7 @@ import {
   Marker,
   Popup,
   useMapEvents,
+  useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -42,7 +43,6 @@ const MapSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [tempCoords, setTempCoords] = useState(null);
   const [markerName, setMarkerName] = useState("");
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -87,15 +87,6 @@ const MapSection = () => {
     setMarkers((prevMarkers) => prevMarkers.filter((_, i) => i !== index));
   };
 
-  const handleMoveToTop = (index) => {
-    setMarkers((prevMarkers) => {
-      const newMarkers = [...prevMarkers];
-      const [movedMarker] = newMarkers.splice(index, 1);
-      newMarkers.unshift(movedMarker);
-      return newMarkers;
-    });
-  };
-
   if (loading) {
     return <div>Loading map...</div>;
   }
@@ -105,7 +96,7 @@ const MapSection = () => {
       <Sidebar
         markers={markers}
         onDelete={handleDeleteMarker}
-        onMoveToTop={handleMoveToTop}
+        // onMarkerClick={null}
       />
       <div className="map-container">
         <MapContainer

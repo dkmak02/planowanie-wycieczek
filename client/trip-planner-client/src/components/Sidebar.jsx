@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Sidebar.css";
 import Marker from "./Marker";
 import CalculationForm from "./CalculationForm";
-const Sidebar = ({ markers, onDelete, onMoveToTop }) => {
+const Sidebar = ({ markers, onDelete }) => {
   const [showCalculationForm, setShowCalculationForm] = useState(false);
   const handleCalculatePath = () => {
     setShowCalculationForm(true); // Show the calculation form
@@ -30,6 +30,7 @@ const Sidebar = ({ markers, onDelete, onMoveToTop }) => {
               name={marker.name}
               onDelete={onDelete}
               isActive={index === 0}
+              // onClick={() => onMarkerClick(index)}
             />
           ))}
         </ul>

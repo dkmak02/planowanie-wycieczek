@@ -1,5 +1,5 @@
 .content {
-  display: flex;
+  display: relative;
   height: calc(100vh - 50px); 
 }
 
@@ -7,4 +7,6 @@
   flex: 1; 
   position: relative;
   overflow: hidden; 
+  width: 100%;
+  z-index: 1;
 }

@@ -1,22 +1,19 @@
 /* Marker.css */
 .marker {
-  padding: 1rem;
+  padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 8px; /* Rounded corners for card effect */
-  background-color: #f9f9f9; /* Default background color */
-  transition: background-color 0.3s; /* Smooth transition */
-  margin-bottom: 0.5rem; /* Space between markers */
-  display: flex; /* Use flexbox for layout */
-  justify-content: space-between; /* Space between items */
-  align-items: center; /* Center vertically */
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.5s ease-in-out;
 }
 
 .marker:hover {
-  background-color: #e6e6e6; /* Light gray on hover */
+  background-color: #86868652; /* Light gray on hover */
 }
 
 .marker-active {
-  background-color: #d1e7dd; /* Highlight color for active marker */
+  background-color: #ffdfc996; /* Highlight color for active marker */
   font-weight: bold; /* Bold text for active marker */
 }
 
