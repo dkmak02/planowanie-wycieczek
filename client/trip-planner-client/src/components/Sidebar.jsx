@@ -1,8 +1,23 @@
-import React from "react";
-import "./Sidebar.css"; // Ensure this is the correct path to your CSS
-import Marker from "./Marker"; // Import the Marker component
-
+import React, { useState } from "react";
+import "./Sidebar.css";
+import Marker from "./Marker";
+import CalculationForm from "./CalculationForm";
 const Sidebar = ({ markers, onDelete, onMoveToTop }) => {
+  const [showCalculationForm, setShowCalculationForm] = useState(false);
+  const handleCalculatePath = () => {
+    setShowCalculationForm(true); // Show the calculation form
+  };
+
+  const handleCalculate = (maxHours, maxDays) => {
+    console.log(
+      "Calculating with:",
+      maxHours,
+      "hours/day and",
+      maxDays,
+      "days"
+    );
+    // Add your calculation logic here
+  };
   return (
     <div className="sidebar">
       <h2>Markers</h2>
@@ -14,18 +29,25 @@ const Sidebar = ({ markers, onDelete, onMoveToTop }) => {
               index={index}
               name={marker.name}
               onDelete={onDelete}
-              isActive={index === 0} // Set first marker as active for styling
+              isActive={index === 0}
             />
           ))}
         </ul>
       </div>
       {markers.length >= 2 && (
-        <button
-          onClick={() => console.log("Calculate Path")}
-          className="calculate-button"
-        >
+        <button onClick={handleCalculatePath} className="calculate-button">
           Calculate Path
         </button>
+      )}
+      {showCalculationForm && (
+        <div className="form-overlay">
+          {" "}
+          {/* New overlay div */}
+          <CalculationForm
+            onCalculate={handleCalculate}
+            onClose={() => setShowCalculationForm(false)} // Close the form
+          />
+        </div>
       )}
     </div>
   );
