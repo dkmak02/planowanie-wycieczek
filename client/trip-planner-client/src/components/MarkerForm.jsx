@@ -5,7 +5,7 @@ const MarkerForm = ({ markerName, setMarkerName, onSubmit, onCancel }) => {
     <div className="marker-form-overlay">
       <form className="marker-form" onSubmit={onSubmit}>
         <label>
-          Marker Name:
+          Destination:
           <input
             type="text"
             value={markerName}

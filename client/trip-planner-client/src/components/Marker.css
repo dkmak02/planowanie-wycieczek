@@ -9,18 +9,23 @@
 }
 
 .marker:hover {
-  background-color: #86868652; /* Light gray on hover */
+  background-color: #86868652; 
+  cursor:pointer;
+}
+.marker-active:hover {
+  background-color: #eba577ce; 
+  cursor:pointer;
 }
 
 .marker-active {
-  background-color: #ffdfc996; /* Highlight color for active marker */
-  font-weight: bold; /* Bold text for active marker */
+  background-color: #ffdfc996; 
+  font-weight: bold;
 }
 
 .marker-content {
-  display: flex; /* Use flexbox for layout */
-  justify-content: space-between; /* Space between text and button */
-  align-items: center; /* Center items vertically */
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
   width: 100%; /* Full width for proper alignment */
 }
 

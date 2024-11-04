@@ -1,6 +1,6 @@
 // Marker.js
 import React from "react";
-import "./Marker.css"; // Ensure this file exists for styling
+import "./Marker.css";
 
 const Marker = ({ index, name, onDelete, isActive, onClick }) => {
   return (
@@ -13,8 +13,8 @@ const Marker = ({ index, name, onDelete, isActive, onClick }) => {
         <div className="marker-actions">
           <button
             onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering any parent click events
-              onDelete(index); // Call the delete function
+              e.stopPropagation();
+              onDelete(index);
             }}
             className="delete-button"
           >

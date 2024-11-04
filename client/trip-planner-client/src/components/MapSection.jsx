@@ -5,13 +5,13 @@ import {
   Marker,
   Popup,
   useMapEvents,
-  useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Sidebar from "./Sidebar";
 import MarkerForm from "./MarkerForm";
 import "./MapSection.css";
+
 const customIcon = L.icon({
   iconUrl: "/map_location_marker.png",
   iconSize: [38, 38],
@@ -26,11 +26,13 @@ const firstMarkerIcon = L.icon({
   popupAnchor: [0, -38],
 });
 
-const MapClickHandler = ({ onMapClick }) => {
+const MapClickHandler = ({ onMapClick, showForm, deleting }) => {
   useMapEvents({
     click: (event) => {
-      const { lat, lng } = event.latlng;
-      onMapClick(lat, lng);
+      if (!showForm && !deleting) {
+        const { lat, lng } = event.latlng;
+        onMapClick(lat, lng);
+      }
     },
   });
   return null;
@@ -43,6 +45,9 @@ const MapSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [tempCoords, setTempCoords] = useState(null);
   const [markerName, setMarkerName] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [map, setMap] = useState(null);
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -64,8 +69,10 @@ const MapSection = () => {
   }, []);
 
   const handleMapClick = (lat, lng) => {
-    setTempCoords([lat, lng]);
-    setShowForm(true);
+    if (!showForm && !deleting) {
+      setTempCoords([lat, lng]);
+      setShowForm(true);
+    }
   };
 
   const handleFormSubmit = (e) => {
@@ -84,7 +91,16 @@ const MapSection = () => {
   };
 
   const handleDeleteMarker = (index) => {
+    setDeleting(true);
     setMarkers((prevMarkers) => prevMarkers.filter((_, i) => i !== index));
+    setTimeout(() => {
+      setDeleting(false);
+    }, 100);
+  };
+  const moveToMarker = (lat, lng) => {
+    if (map) {
+      map.setView([lat, lng], map._zoom);
+    }
   };
 
   if (loading) {
@@ -96,20 +112,25 @@ const MapSection = () => {
       <Sidebar
         markers={markers}
         onDelete={handleDeleteMarker}
-        // onMarkerClick={null}
+        onMarkerClick={moveToMarker}
       />
       <div className="map-container">
         <MapContainer
           center={position}
           zoom={13}
           scrollWheelZoom={true}
-          style={{ height: "100vh" }}
+          style={{ height: "100vh", width: "100%" }}
+          ref={setMap}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <MapClickHandler onMapClick={handleMapClick} />
+          <MapClickHandler
+            onMapClick={handleMapClick}
+            showForm={showForm}
+            deleting={deleting}
+          />
           {markers.map((marker, index) => (
             <Marker
               key={index}
@@ -117,11 +138,10 @@ const MapSection = () => {
               icon={index === 0 ? firstMarkerIcon : customIcon}
             >
               <Popup>
-                {marker.name
-                  ? marker.name
-                  : `Marker at [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(
-                      2
-                    )}]`}
+                {marker.name ||
+                  `Marker at [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(
+                    2
+                  )}]`}
                 <br />
                 <button onClick={() => handleDeleteMarker(index)}>
                   Delete
