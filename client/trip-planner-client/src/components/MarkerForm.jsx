@@ -18,9 +18,7 @@ const MarkerForm = ({
   const bulletRef = useRef(null);
   useEffect(() => {
     if (sliderRef.current && bulletRef.current) {
-      const sliderWidth = sliderRef.current.clientWidth;
       const value = markerTime;
-      const min = 0;
       const max = 720;
       const percentage = value / max;
       const offset = percentage * 250;
@@ -43,6 +41,9 @@ const MarkerForm = ({
           required
         />
         <div className="container">
+          <label className="form-label">
+            <h3>rest time</h3>
+          </label>
           <div className="range-slider">
             <span id="rs-bullet" ref={bulletRef} className="rs-label">
               {markerTime}
