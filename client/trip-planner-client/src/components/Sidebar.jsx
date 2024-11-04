@@ -28,7 +28,7 @@ const Sidebar = ({ markers, onDelete, onMarkerClick }) => {
               index={index}
               name={marker.name}
               onDelete={onDelete}
-              isActive={index === 0}
+              isActive={marker.isRestingPlace}
               onClick={() => onMarkerClick(marker.lat, marker.lng)}
             />
           ))}

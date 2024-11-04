@@ -45,7 +45,7 @@ const MapSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [tempCoords, setTempCoords] = useState(null);
   const [markerName, setMarkerName] = useState("");
-  const [markerTime, setMarkerTime] = useState(0);
+  const [markerTime, setMarkerTime] = useState(30);
   const [deleting, setDeleting] = useState(false);
   const [map, setMap] = useState(null);
   const [restingPlace, setRestingPlace] = useState(false);
@@ -78,7 +78,7 @@ const MapSection = () => {
   };
 
   const handleFormSubmit = (e) => {
-    console.log(tempCoords, markerName, restingPlace);
+    console.log(tempCoords, markerName, restingPlace, markerTime);
     e.preventDefault();
     setMarkers((prevMarkers) => [
       ...prevMarkers,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./MarkerForm.css";
 
 const MarkerForm = ({
@@ -11,6 +11,22 @@ const MarkerForm = ({
   onSubmit,
   onCancel,
 }) => {
+  const handleSliderChange = (e) => {
+    setMarkerTime(Number(e.target.value));
+  };
+  const sliderRef = useRef(null);
+  const bulletRef = useRef(null);
+  useEffect(() => {
+    if (sliderRef.current && bulletRef.current) {
+      const sliderWidth = sliderRef.current.clientWidth;
+      const value = markerTime;
+      const min = 0;
+      const max = 720;
+      const percentage = value / max;
+      const offset = percentage * 250;
+      bulletRef.current.style.left = `${offset}px`;
+    }
+  }, [markerTime]);
   return (
     <div className="marker-form-overlay" onMouseDown={onCancel}>
       <form
@@ -18,38 +34,37 @@ const MarkerForm = ({
         onSubmit={onSubmit}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <label className="form-label">
-          <h3>Destination</h3>
-        </label>
         <input
           placeholder="Enter destination"
           type="text"
           id="destination"
-          value={markerName}
+          defaultValue={markerName}
           onChange={(e) => setMarkerName(e.target.value)}
           required
         />
+        <div className="container">
+          <div className="range-slider">
+            <span id="rs-bullet" ref={bulletRef} className="rs-label">
+              {markerTime}
+            </span>
+            <input
+              type="range"
+              id="time"
+              className="rs-range"
+              ref={sliderRef}
+              value={markerTime}
+              onChange={handleSliderChange}
+              min="0"
+              max="720"
+              step="30"
+            />
+          </div>
 
-        <label className="form-label">
-          <h3>Time (in minutes)</h3>
-        </label>
-        <input
-          placeholder="Enter time in minutes"
-          type="number"
-          id="time"
-          value={markerTime}
-          onChange={(e) => {
-            const value = Math.max(0, Math.min(1440, e.target.value));
-            if (value % 30 === 0 || value === "") {
-              setMarkerTime(value);
-            }
-          }}
-          required
-          min="0"
-          max="1440"
-          step="30"
-        />
-
+          <div className="box-minmax">
+            <span>0</span>
+            <span>720</span>
+          </div>
+        </div>
         <div>
           <div className="custom-input">
             <input
