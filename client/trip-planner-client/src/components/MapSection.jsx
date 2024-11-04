@@ -147,9 +147,7 @@ const MapSection = () => {
             >
               <Popup>
                 {marker.name ||
-                  `Marker at [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(
-                    2
-                  )}]`}
+                  `Marker [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(2)}]`}
                 <br />
                 <button onClick={() => handleDeleteMarker(index)}>
                   Delete
