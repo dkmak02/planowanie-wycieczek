@@ -45,8 +45,10 @@ const MapSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [tempCoords, setTempCoords] = useState(null);
   const [markerName, setMarkerName] = useState("");
+  const [markerTime, setMarkerTime] = useState(0);
   const [deleting, setDeleting] = useState(false);
   const [map, setMap] = useState(null);
+  const [restingPlace, setRestingPlace] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -76,10 +78,16 @@ const MapSection = () => {
   };
 
   const handleFormSubmit = (e) => {
+    console.log(tempCoords, markerName, restingPlace);
     e.preventDefault();
     setMarkers((prevMarkers) => [
       ...prevMarkers,
-      { lat: tempCoords[0], lng: tempCoords[1], name: markerName },
+      {
+        lat: tempCoords[0],
+        lng: tempCoords[1],
+        name: markerName,
+        isRestingPlace: restingPlace,
+      },
     ]);
     setShowForm(false);
     setMarkerName("");
@@ -135,7 +143,7 @@ const MapSection = () => {
             <Marker
               key={index}
               position={[marker.lat, marker.lng]}
-              icon={index === 0 ? firstMarkerIcon : customIcon}
+              icon={marker.isRestingPlace ? firstMarkerIcon : customIcon}
             >
               <Popup>
                 {marker.name ||
@@ -155,6 +163,10 @@ const MapSection = () => {
         <MarkerForm
           markerName={markerName}
           setMarkerName={setMarkerName}
+          markerTime={markerTime}
+          setMarkerTime={setMarkerTime}
+          restingPlace={restingPlace}
+          setRestingPlace={setRestingPlace}
           onSubmit={handleFormSubmit}
           onCancel={handleCancelForm}
         />
