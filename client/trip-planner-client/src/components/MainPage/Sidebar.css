@@ -20,17 +20,19 @@
 }
 
 .calculate-button {
-  padding: 0.5rem;
-  background-color: #007bff;
+  padding: 0.75rem;
+  background-color: #060b14e7;
   color: white;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
+  border-radius: 15px;
   cursor: pointer;
   align-self: center;
   width: calc(100% - 2rem);
   margin-top: auto; /* Push button to bottom */
+  transition: background 0.3s, transform 0.4s;
 }
 
 .calculate-button:hover {
-  background-color: #0056b3;
+  background-color: #060b14d7;
 }

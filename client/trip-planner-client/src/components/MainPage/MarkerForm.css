@@ -118,22 +118,22 @@
   font-weight: bold; /* Bold text for emphasis */
   text-align: center; /* Center align text */
   border-radius: 25px; /* Rounded edges to match form inputs */
-  background-color: #8f9192be; /* Slightly transparent background */
+  background-color: #83929983; /* Slightly transparent background */
   transition: background 0.3s, transform 0.2s; /* Smooth transitions */
   cursor: pointer; /* Pointer cursor for interactivity */
 }
 
 .custom-input label:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Lighter background on hover */
+  background-color: #bcc6cc9a; /* Lighter background on hover */
 }
 
 .custom-input input[type=radio]:checked + label {
-  background-color: #cc9020;/* Main action color */
+  background-color: #F6AE2D;/* Main action color */
   color: #fff; /* White text for contrast */
 }
 
 .custom-input input[type=radio]:checked + label:hover {
-  background-color: #e79f1a; /* Darker color on hover when selected */
+  background-color: #EB9C0A; /* Darker color on hover when selected */
 }
 .container {
   display: flex;

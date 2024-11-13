@@ -19,6 +19,16 @@ const CalculationForm = ({ onCalculate, onClose }) => {
     }
   };
 
+  const incrementHours = () =>
+    setMaxHours((prev) => Math.min(24, Number(prev) + 1));
+  const decrementHours = () =>
+    setMaxHours((prev) => Math.max(1, Number(prev) - 1));
+
+  const incrementDays = () =>
+    setMaxDays((prev) => Math.min(365, Number(prev) + 1));
+  const decrementDays = () =>
+    setMaxDays((prev) => Math.max(1, Number(prev) - 1));
+
   const handleKeyDown = (e) => {
     if (e.key === "-" || e.key === "e" || e.key === "E") {
       e.preventDefault();
@@ -37,34 +47,49 @@ const CalculationForm = ({ onCalculate, onClose }) => {
         className="calculation-form"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <h2>Calculation Form</h2>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="custom-number-input">
             <label>
               Maximum Hours per Day:
-              <input
-                type="number"
-                value={maxHours}
-                onChange={handleMaxHoursChange}
-                onKeyDown={handleKeyDown}
-                min="1"
-                max="24"
-                required
-              />
+              <div className="input-wrapper">
+                <button type="button" onClick={decrementHours}>
+                  −
+                </button>
+                <input
+                  type="number"
+                  value={maxHours}
+                  onChange={handleMaxHoursChange}
+                  onKeyDown={handleKeyDown}
+                  min="1"
+                  max="24"
+                  required
+                />
+                <button type="button" onClick={incrementHours}>
+                  +
+                </button>
+              </div>
             </label>
           </div>
-          <div>
+          <div className="custom-number-input">
             <label>
               Maximum Quantity of Days:
-              <input
-                type="number"
-                value={maxDays}
-                onChange={handleMaxDaysChange}
-                onKeyDown={handleKeyDown}
-                min="1"
-                max="365"
-                required
-              />
+              <div className="input-wrapper">
+                <button type="button" onClick={decrementDays}>
+                  −
+                </button>
+                <input
+                  type="number"
+                  value={maxDays}
+                  onChange={handleMaxDaysChange}
+                  onKeyDown={handleKeyDown}
+                  min="1"
+                  max="365"
+                  required
+                />
+                <button type="button" onClick={incrementDays}>
+                  +
+                </button>
+              </div>
             </label>
           </div>
           <button type="submit" className="submit-button">
