@@ -10,3 +10,8 @@
   width: 100%;
   z-index: 1;
 }
+.popup-content {
+  max-width: 150px; /* Set a maximum width for the content */
+  word-wrap: break-word; /* Break long words if necessary */
+  white-space: normal; /* Allow text to wrap to the next line */
+}

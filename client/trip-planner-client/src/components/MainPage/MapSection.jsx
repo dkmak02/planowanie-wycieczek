@@ -149,12 +149,16 @@ const MapSection = () => {
               icon={marker.isRestingPlace ? firstMarkerIcon : customIcon}
             >
               <Popup>
-                {marker.name ||
-                  `Marker [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(2)}]`}
-                <br />
-                <button onClick={() => handleDeleteMarker(index)}>
-                  Delete
-                </button>
+                <div className="popup-content">
+                  {marker.name ||
+                    `Marker [${marker.lat.toFixed(2)}, ${marker.lng.toFixed(
+                      2
+                    )}]`}
+                  <br />
+                  <button onClick={() => handleDeleteMarker(index)}>
+                    Delete
+                  </button>
+                </div>
               </Popup>
             </Marker>
           ))}

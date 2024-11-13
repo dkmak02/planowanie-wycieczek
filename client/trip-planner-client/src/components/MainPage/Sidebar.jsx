@@ -11,7 +11,10 @@ const Sidebar = ({ markers, onDelete, onMarkerClick }) => {
   const handleCalculate = (maxHours, maxDays) => {
     if (markers.every((marker) => marker.isRestingPlace === false)) {
       console.log("Please select at least one resting place");
+      return;
     }
+    console.log("gratulacje jedziesz na wyceiczke");
+
   };
   return (
     <div className="sidebar">

@@ -57,7 +57,7 @@ const MarkerForm = ({
               onChange={handleSliderChange}
               min="0"
               max="720"
-              step="30"
+              step="15"
             />
           </div>
 
