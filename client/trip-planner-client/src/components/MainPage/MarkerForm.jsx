@@ -33,7 +33,7 @@ const MarkerForm = ({
         onMouseDown={(e) => e.stopPropagation()}
       >
         <input
-          placeholder="Enter destination"
+          placeholder="Enter destination name"
           type="text"
           id="destination"
           defaultValue={markerName}
@@ -42,7 +42,7 @@ const MarkerForm = ({
         />
         <div className="container">
           <label className="form-label">
-            <h3>rest time</h3>
+            <h3>visit time</h3>
           </label>
           <div className="range-slider">
             <span id="rs-bullet" ref={bulletRef} className="rs-label">

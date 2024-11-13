@@ -89,13 +89,16 @@ const MapSection = () => {
         isRestingPlace: restingPlace,
       },
     ]);
+    setRestingPlace(false);
     setShowForm(false);
     setMarkerName("");
+    setMarkerTime(30);
   };
 
   const handleCancelForm = () => {
     setShowForm(false);
     setMarkerName("");
+    setMarkerTime(30);
   };
 
   const handleDeleteMarker = (index) => {

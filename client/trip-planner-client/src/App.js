@@ -1,6 +1,6 @@
 import './App.css';
-import MapSection from './components/MapSection';
-import Navbar from "./components/Navbar";
+import MapSection from "./components/MainPage/MapSection";
+import Navbar from "./components/MainPage/Navbar";
 
 function App() {
   return (

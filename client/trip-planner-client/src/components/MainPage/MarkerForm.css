@@ -114,11 +114,11 @@
 .custom-input label {
   display: block;
   padding: 12px; /* Increased padding for a better click area */
-  color: #fff; /* White text color */
+  color: #070505; /* White text color */
   font-weight: bold; /* Bold text for emphasis */
   text-align: center; /* Center align text */
   border-radius: 25px; /* Rounded edges to match form inputs */
-  background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+  background-color: #8f9192be; /* Slightly transparent background */
   transition: background 0.3s, transform 0.2s; /* Smooth transitions */
   cursor: pointer; /* Pointer cursor for interactivity */
 }
@@ -128,12 +128,12 @@
 }
 
 .custom-input input[type=radio]:checked + label {
-  background-color: #060b14e7; /* Main action color */
+  background-color: #cc9020;/* Main action color */
   color: #fff; /* White text for contrast */
 }
 
 .custom-input input[type=radio]:checked + label:hover {
-  background-color: #070e1be3; /* Darker color on hover when selected */
+  background-color: #e79f1a; /* Darker color on hover when selected */
 }
 .container {
   display: flex;
@@ -219,7 +219,7 @@
   line-height: 30px;
   text-align: center;
   font-weight: bold;
-  padding-top: 10px;
+  padding-top: 8px;
   box-sizing: border-box;
   border: 2px solid #fff;
   color: #fff;

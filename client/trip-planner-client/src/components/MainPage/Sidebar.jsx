@@ -9,13 +9,9 @@ const Sidebar = ({ markers, onDelete, onMarkerClick }) => {
   };
 
   const handleCalculate = (maxHours, maxDays) => {
-    console.log(
-      "Calculating with:",
-      maxHours,
-      "hours/day and",
-      maxDays,
-      "days"
-    );
+    if (markers.every((marker) => marker.isRestingPlace === false)) {
+      console.log("Please select at least one resting place");
+    }
   };
   return (
     <div className="sidebar">
@@ -40,13 +36,10 @@ const Sidebar = ({ markers, onDelete, onMarkerClick }) => {
         </button>
       )}
       {showCalculationForm && (
-        <div className="form-overlay">
-          {" "}
-          <CalculationForm
-            onCalculate={handleCalculate}
-            onClose={() => setShowCalculationForm(false)}
-          />
-        </div>
+        <CalculationForm
+          onCalculate={handleCalculate}
+          onClose={() => setShowCalculationForm(false)}
+        />
       )}
     </div>
   );
