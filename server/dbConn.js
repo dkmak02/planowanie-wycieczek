@@ -1,5 +1,6 @@
 const pgp = require('pg-promise')();
-
+const dotenv = require('dotenv');
+dotenv.config({ path: './process.env' });
 require('dotenv').config();
 
 const dbHost = process.env.DB_HOST;
@@ -7,7 +8,6 @@ const dbPort = process.env.DB_PORT;
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_NAME;
-
 const connection = {
   host: dbHost,    
   port: dbPort,         

@@ -1,5 +1,5 @@
 var db = require('./../dbConn');
-
+const {filterApiData} = require('./pathPermutation')
 const getPathsCombinations = async(input) => {
     const results = [];
     const inputArray = Object.keys(input);
@@ -36,10 +36,10 @@ exports.getPaths = async (req, res, next) => {
     };
     try {
         paths = await getPathsCombinations(input)
-        
+        filteredPaths = filterApiData(paths)
         res.status(200).json({
             status: 'success',
-            data: paths,
+            data: filteredPaths,
         });
     } catch (error) {
         console.error('Error executing query', error.stack);
