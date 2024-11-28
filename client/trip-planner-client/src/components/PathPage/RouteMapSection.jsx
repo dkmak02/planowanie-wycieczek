@@ -30,8 +30,8 @@ const RouteMapSection = () => {
         }
         const data = await response.json();
         console.log(data);
-        setRoutesData(data.data); // Assuming routesData is the "data" array from JSON
-        setPointsData(data.points); // Assuming pointsData is the "points" object from JSON
+        setRoutesData(data.data.filteredData); 
+        setPointsData(data.data.locations); 
       } catch (error) {
         console.error("Error fetching routes data:", error);
       }
@@ -62,36 +62,20 @@ const RouteMapSection = () => {
                   const coordinates = segment.geoJSON.coordinates.map(
                     ([lon, lat]) => [lat, lon]
                   );
-                  const startCoordinates = coordinates[0];
-                  const startName = route.start;
 
                   return (
-                    <React.Fragment
+                    <Polyline
                       key={`route-${routeIndex}-segment-${segmentIndex}`}
-                    >
-                      <Polyline
-                        positions={coordinates}
-                        color="blue"
-                        weight={4}
-                      />
-
-                      {segmentIndex === 0 && (
-                        <Marker
-                          position={startCoordinates}
-                          icon={firstMarkerIcon}
-                        >
-                          <Popup>{startName}</Popup>
-                        </Marker>
-                      )}
-                    </React.Fragment>
+                      positions={coordinates}
+                      color="blue"
+                      weight={4}
+                    />
                   );
                 }
                 return null;
               })
             : null;
         })}
-
-        {/* Loop through pointsData and place markers */}
         {Object.entries(pointsData).map(([pointName, coords]) => (
           <Marker key={pointName} position={coords} icon={firstMarkerIcon}>
             <Popup>{pointName}</Popup>

@@ -39,7 +39,11 @@ exports.getPaths = async (req, res, next) => {
         filteredPaths = filterApiData(paths)
         res.status(200).json({
             status: 'success',
-            data: filteredPaths,
+            data: {
+                locations: input,
+                filteredData: filteredPaths,
+                allData: paths
+            },
         });
     } catch (error) {
         console.error('Error executing query', error.stack);
