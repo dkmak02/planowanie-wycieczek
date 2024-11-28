@@ -1,0 +1,17 @@
+/* RouteMapSection.css */
+.map-container {
+  height: calc(100vh - 50px);
+  width: 100%;     /* 100% width of its parent container */
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.leaflet-container {
+  height: 100%;    /* Ensure the Leaflet map takes the full height of the container */
+  width: 100%;     /* Ensure the Leaflet map takes the full width of the container */
+}
