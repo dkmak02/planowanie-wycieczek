@@ -35,7 +35,7 @@ const createOrderedPairs = (circlePath) => {
     for (let i = 0; i < circlePath.length - 1; i++) {
         const first = circlePath[i];
         const second = circlePath[i + 1];
-        pairs.push([first, second].sort());
+        pairs.push([first, second]);
     }
 
     return pairs;

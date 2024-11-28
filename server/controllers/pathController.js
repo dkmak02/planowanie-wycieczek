@@ -4,24 +4,24 @@ const getPathsCombinations = async(input) => {
     const results = [];
     const inputArray = Object.keys(input);
         for (let i = 0; i < inputArray.length; i++) {
-            for (let j = i + 1; j < inputArray.length; j++) { 
-                const startPoint = inputArray[i];
-                const endPoint = inputArray[j];
-                if (startPoint !== endPoint) {
-                    const startLat = input[startPoint].lat;
-                    const startLon = input[startPoint].lon;
-                    const endLat = input[endPoint].lat;
-                    const endLon = input[endPoint].lon;
-                    const result = await db.query(
-                        'SELECT * FROM find_shortest_path($1, $2, $3, $4)',
-                        [startLat, startLon, endLat, endLon]
-                    );
-                    results.push({
-                        start: startPoint,
-                        end: endPoint,
-                        path: result
-                    });
-                }
+            for (let j = 0; j < inputArray.length; j++) {
+              const startPoint = inputArray[i];
+              const endPoint = inputArray[j];
+              if (startPoint !== endPoint) {
+                const startLat = input[startPoint].lat;
+                const startLon = input[startPoint].lon;
+                const endLat = input[endPoint].lat;
+                const endLon = input[endPoint].lon;
+                const result = await db.query(
+                  "SELECT * FROM find_shortest_path($1, $2, $3, $4)",
+                  [startLat, startLon, endLat, endLon]
+                );
+                results.push({
+                  start: startPoint,
+                  end: endPoint,
+                  path: result,
+                });
+              }
             }
         }
     return results

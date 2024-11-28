@@ -9,14 +9,17 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./RouteMapSection.css";
+
 const firstMarkerIcon = L.icon({
   iconUrl: "/map_starter_marker.png",
   iconSize: [38, 38],
   iconAnchor: [19, 38],
   popupAnchor: [0, -38],
 });
+
 const RouteMapSection = () => {
   const [routesData, setRoutesData] = useState([]);
+  const [pointsData, setPointsData] = useState({});
 
   useEffect(() => {
     const fetchRoutesData = async () => {
@@ -27,7 +30,8 @@ const RouteMapSection = () => {
         }
         const data = await response.json();
         console.log(data);
-        setRoutesData(data);
+        setRoutesData(data.data); // Assuming routesData is the "data" array from JSON
+        setPointsData(data.points); // Assuming pointsData is the "points" object from JSON
       } catch (error) {
         console.error("Error fetching routes data:", error);
       }
@@ -86,6 +90,13 @@ const RouteMapSection = () => {
               })
             : null;
         })}
+
+        {/* Loop through pointsData and place markers */}
+        {Object.entries(pointsData).map(([pointName, coords]) => (
+          <Marker key={pointName} position={coords} icon={firstMarkerIcon}>
+            <Popup>{pointName}</Popup>
+          </Marker>
+        ))}
       </MapContainer>
     </div>
   );
