@@ -100,7 +100,6 @@ const DraggableRoute = ({ day, route, routeIndex, moveRoute }) => {
         cursor: "move",
       }}
     >
-      {/* Display Route Info */}
       <RouteInfo route={route} />
     </div>
   );
