@@ -5,7 +5,7 @@ import MarkerForm from "./MarkerForm";
 import CalculationForm from "./CalculationForm";
 import Marker from "./Marker";
 
-const ItemType = "MARKER"; // Define item type for drag-and-drop
+const ItemType = "MARKER"; 
 
 const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   const [showCalculationForm, setShowCalculationForm] = useState(false);
