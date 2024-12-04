@@ -17,6 +17,8 @@
 .marker-list {
   flex: 1; /* Allow this area to grow and shrink */
   overflow-y: auto; /* Enable vertical scrolling */
+  padding: 0;
+  list-style: none;
 }
 
 .calculate-button {
@@ -41,12 +43,6 @@
   padding: 5px;
 }
 
-.marker-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
 .calculate-button {
   margin-top: 20px;
   padding: 10px;
@@ -58,4 +54,7 @@
 
 .calculate-button:hover {
   background-color: #45a049;
+}
+.marker-item:hover {
+  background: #eee;
 }
