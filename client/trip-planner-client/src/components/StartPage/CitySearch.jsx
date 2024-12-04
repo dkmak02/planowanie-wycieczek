@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import the useNavigate hook for navigation
-import styles from "./CitySearch.css"; // Import the CSS module
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
+import "./CitySearch.css"; 
 
 const CitySearch = ({ onAddCity }) => {
   const [searchQuery, setSearchQuery] = useState(""); 
@@ -66,30 +66,36 @@ const CitySearch = ({ onAddCity }) => {
       state: { selectedCities }, 
     });
   };
+  const handleDeleteCity = (index) => {
+    setSelectedCities((prevCities) =>
+      prevCities.filter((_, cityIndex) => cityIndex !== index)
+    );
+  };
+  
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.heading}>City Search</h2>
-      <div className={styles.inputContainer}>
+    <div className="container">
+      <h2 className="heading">City Search</h2>
+      <div className="inputContainer">
         <input
           type="text"
           value={searchQuery}
           onChange={handleInputChange}
           placeholder="Enter city name..."
-          className={styles.input}
+          className="input"
         />
       </div>
 
-      <div className={styles.resultsContainer}>
+      <div className="resultsContainer">
         <h3>Search Results</h3>
         {searchResults.length > 0 ? (
-          <ul className={styles.resultsList}>
+          <ul className="resultsList">
             {searchResults.map((result, index) => (
-              <li key={index} className={styles.resultItem}>
+              <li key={index} className="resultItem">
                 <span>{result.display_name}</span>
                 <button
                   onClick={() => handleAddCity(result)}
-                  className={styles.addButton}
+                  className="addButton"
                 >
                   Add
                 </button>
@@ -101,13 +107,19 @@ const CitySearch = ({ onAddCity }) => {
         )}
       </div>
 
-      <div className={styles.selectedCitiesContainer}>
+      <div className="selectedCitiesContainer">
         <h3>Selected Cities</h3>
         {selectedCities.length > 0 ? (
-          <ul className={styles.selectedCitiesList}>
+          <ul className="selectedCitiesList">
             {selectedCities.map((city, index) => (
-              <li key={index} className={styles.selectedCityItem}>
-                {city.display_name}
+              <li key={index} className="selectedCityItem">
+                <span>{city.name}</span>
+                <button
+                  className="deleteButton"
+                  onClick={() => handleDeleteCity(index)} // Delete city on button click
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
@@ -115,10 +127,10 @@ const CitySearch = ({ onAddCity }) => {
           <p>No cities added</p>
         )}
       </div>
-      <div className={styles.continueButtonContainer}>
+      <div className="continueButtonContainer">
         <button
           onClick={handleContinue}
-          className={styles.continueButton}
+          className="continueButton"
           disabled={selectedCities.length === 0} 
         >
           Continue

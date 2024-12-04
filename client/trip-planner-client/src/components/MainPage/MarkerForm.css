@@ -135,7 +135,7 @@
 .custom-input input[type=radio]:checked + label:hover {
   background-color: #EB9C0A; /* Darker color on hover when selected */
 }
-.container {
+.container2 {
   display: flex;
   flex-direction: column;
   align-items: center;

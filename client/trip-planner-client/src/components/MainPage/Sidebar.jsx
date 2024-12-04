@@ -51,41 +51,44 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
     <div className="sidebar">
       <h2>Localizations</h2>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="marker-list">
-          {(provided) => (
-            <ul
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="marker-list"
-            >
-              {markers.map((marker, index) => (
-                <Draggable key={index} draggableId={`marker-${index}`} index={index}>
-                  {(provided) => (
-                    <li
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}      
-
-                    >
-                      <Marker
-                        key={index}
-                        index={index}
-                        name={marker.name}
-                        onDelete={onDelete}
-                        isActive={index === 0}
-                        onClick={() => onMarkerClick(marker.lat, marker.lng)}
-                        onEdit={() => handleEditMarker(index)}
-                      />
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ul>
-          )}
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <ul
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="marker-list"
+              >
+                {markers.map((marker, index) => (
+                  <Draggable
+                    key={`marker-${index}`}
+                    draggableId={`marker-${index}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Marker
+                          index={index}
+                          name={marker.name}
+                          onDelete={onDelete}
+                          isActive={index === 0}
+                          onClick={() => onMarkerClick(marker.lat, marker.lng)}
+                          onEdit={onEdit}
+                        />
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
         </Droppable>
 
       </DragDropContext>
+
       {markers.length >= 2 && (
         <button onClick={handleCalculatePath} className="calculate-button">
           Calculate Path
