@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px; 
+  height: 50px;
 }
 
 .navbar h1 {
@@ -20,10 +20,6 @@
   padding: 0;
 }
 
-.nav-links li {
-  margin: 0;
-}
-
 .nav-links a {
   color: white;
   text-decoration: none;
@@ -32,4 +28,29 @@
 
 .nav-links a:hover {
   text-decoration: underline;
+}
+
+.upload-box {
+  display: flex;
+  align-items: center;
+}
+
+.upload-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.upload-button:hover {
+  background-color: #45a049;
+}
+.name{
+  color: white;
+  font-size: 20px;
+  margin-right: 10px;
+  a {
+    text-decoration: none;
+  }
 }

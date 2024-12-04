@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import "./Sidebar.css";
-import Marker from "./Marker";
-import CalculationForm from "./CalculationForm";
 import MarkerForm from "./MarkerForm";
+import CalculationForm from "./CalculationForm";
+import Marker from "./Marker";
+
+const ItemType = "MARKER"; // Define item type for drag-and-drop
 
 const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   const [showCalculationForm, setShowCalculationForm] = useState(false);
@@ -37,69 +39,71 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
     onEdit(updatedMarkers);
   };
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const reorderedMarkers = Array.from(markers);
-    const [movedMarker] = reorderedMarkers.splice(result.source.index, 1);
-    reorderedMarkers.splice(result.destination.index, 0, movedMarker);
-
+  const handleDragEnd = (fromIndex, toIndex) => {
+    const reorderedMarkers = [...markers];
+    const movedMarker = reorderedMarkers.splice(fromIndex, 1)[0];
+    reorderedMarkers.splice(toIndex, 0, movedMarker);
     onEdit(reorderedMarkers);
+  };
+
+  const MarkerWithDragDrop = ({ index, marker }) => {
+    const [, drag] = useDrag({
+      type: ItemType,
+      item: { index },
+    });
+
+    const [, drop] = useDrop({
+      accept: ItemType,
+      hover: (item) => {
+        if (item.index !== index) {
+          handleDragEnd(item.index, index);
+          item.index = index;
+        }
+      },
+    });
+
+    return (
+      <li ref={(node) => drag(drop(node))}>
+        <Marker
+          index={index}
+          name={marker.name}
+          onDelete={onDelete}
+          isActive={index === 0}
+          onClick={() => onMarkerClick(marker.lat, marker.lng)}
+          onEdit={() => handleEditMarker(index)}
+        />
+      </li>
+    );
   };
 
   return (
     <div className="sidebar">
       <h2>Localizations</h2>
-      <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <ul
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="marker-list"
-              >
-                {markers.map((marker, index) => (
-                  <Draggable
-                    key={`marker-${index}`}
-                    draggableId={`marker-${index}`}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <li
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <Marker
-                          index={index}
-                          name={marker.name}
-                          onDelete={onDelete}
-                          isActive={index === 0}
-                          onClick={() => onMarkerClick(marker.lat, marker.lng)}
-                          onEdit={onEdit}
-                        />
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-        </Droppable>
-
-      </DragDropContext>
+      <div className="marker-list">
+        <ul>
+          {markers.map((marker, index) => (
+            <MarkerWithDragDrop
+              key={index}
+              index={index}
+              marker={marker}
+            />
+          ))}
+        </ul>
+      </div>
 
       {markers.length >= 2 && (
         <button onClick={handleCalculatePath} className="calculate-button">
           Calculate Path
         </button>
       )}
+
       {showCalculationForm && (
         <CalculationForm
           onCalculate={handleCalculate}
           onClose={() => setShowCalculationForm(false)}
         />
       )}
+
       {editingIndex !== null && (
         <div className="edit-marker-form">
           <MarkerForm

@@ -44,13 +44,13 @@ const CitySearch = ({ onAddCity }) => {
 
     const timeout = setTimeout(() => {
       fetchCityData(query); 
-    }, 1000);
+    }, 500);
 
     setDebounceTimeout(timeout);
   };
 
   const handleAddCity = (city) => {
-    if (selectedCities.some((c) => c.display_name === city.display_name)) return;
+    if (selectedCities.some((c) => c.name === city.display_name.split(",")[0])) return;
   
     const newCity = {
       name: city.display_name.split(",")[0],

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Marker.css";
 
 const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
   return (
-    <div
-      className={`marker ${isActive ? "marker-active" : ""} marker-${index}`}
+    <li
+      className={`marker ${isActive ? "marker-active" : ""}`}
       onClick={onClick}
     >
       <div className="marker-content">
@@ -13,7 +13,7 @@ const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onEdit(index);
+              onEdit(index); // Trigger edit action
             }}
             className="edit-button"
           >
@@ -24,7 +24,7 @@ const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onDelete(index);
+              onDelete(index); // Trigger delete action
             }}
             className="delete-button"
           >
@@ -32,7 +32,7 @@ const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
           </button>
         </div>
       </div>
-    </div>
+    </li>
   );
 };
 

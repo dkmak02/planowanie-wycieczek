@@ -19,11 +19,8 @@ const Navbar = () => {
   return (
     <div>
       <nav className="navbar">
-        <Link to="/"> <h1>Trip Planner</h1></Link>
+        <Link to="/"> <h1 className = "name">Trip Planner</h1></Link>
         <ul className="nav-links">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
           <li>
             <Link to="/route-map">Route Map</Link>{" "}
           </li>

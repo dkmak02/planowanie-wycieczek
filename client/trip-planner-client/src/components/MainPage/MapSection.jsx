@@ -12,6 +12,8 @@ import Sidebar from "./Sidebar";
 import MarkerForm from "./MarkerForm";
 import "./MapSection.css";
 import { useLocation } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const customIcon = L.icon({
   iconUrl: "/map_location_marker.png",
@@ -123,6 +125,7 @@ const MapSection = () => {
   }
 
   return (
+    <DndProvider backend={HTML5Backend}> 
     <div className="content">
       <Sidebar
         markers={markers}
@@ -181,6 +184,7 @@ const MapSection = () => {
         />
       )}
     </div>
+        </DndProvider>
   );
 };
 
