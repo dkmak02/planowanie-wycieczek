@@ -12,7 +12,6 @@ const loadInputFromFile = () => {
     }
 };
 const getClosedCirclePathFromData = (data) => {
-    console.log(data)
     const pointsSet = new Set();
     data.forEach(item => {
         pointsSet.add(item.start);
@@ -20,7 +19,7 @@ const getClosedCirclePathFromData = (data) => {
     });
 
     const points = Array.from(pointsSet); 
-    const startPoint = 'A1';
+    const startPoint = '1233';
     const remainingPoints = points.filter(point => point !== startPoint); 
     for (let i = remainingPoints.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -47,6 +46,7 @@ const filterPathsByOrderedPairs = (data, orderPairs) => {
         const [start, end] = orderPairs[i];
         const matchingPath = data.filter((path) => path.start === start && path.end === end);
         if (matchingPath.length > 0) {
+            console.log(matchingPath)
             const aggTime = matchingPath[0].path[matchingPath[0].path.length - 1].agg_cost;
             filteredPaths.push({
                 start,
@@ -59,14 +59,15 @@ const filterPathsByOrderedPairs = (data, orderPairs) => {
 
     return filteredPaths;
 };
-const data = loadInputFromFile();
+// const data = loadInputFromFile();
 // const closedCirclePath = getClosedCirclePathFromData(data);
 // const orderedPairs = createOrderedPairs(closedCirclePath); 
 // const filteredPaths = filterPathsByOrderedPairs(data, orderedPairs);
+// console.log(filteredPaths);
 exports.filterApiData = (apiData) =>{
     const closedCirclePath = getClosedCirclePathFromData(apiData);
     const orderedPairs = createOrderedPairs(closedCirclePath); 
-    return filterPathsByOrderedPairs(data, orderedPairs);
+    return filterPathsByOrderedPairs(apiData, orderedPairs);
 }
 
 

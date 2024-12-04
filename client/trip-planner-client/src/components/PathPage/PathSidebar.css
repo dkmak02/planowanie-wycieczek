@@ -1,0 +1,74 @@
+/* PathSidebar.css */
+
+.sidebar {
+    position: absolute; /* Change to absolute positioning */
+    right: 0; /* Align to the left */
+    width: 400px; /* Fixed width for the sidebar */
+    height: 100vh;
+    background-color: rgba(244, 244, 244, 0.85); /* Semi-transparent background */
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    max-height: calc(100vh - 50px); /* Full height minus navbar */
+    z-index: 10; /* Ensure sidebar is above the map */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a slight shadow for better separation */
+  }
+  
+  .day-section {
+    margin-bottom: 1rem;
+  }
+  
+  .day-routes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .route-item {
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: move;
+    margin-bottom: 10px;
+  }
+  
+  .route-item.dragging {
+    opacity: 0.5;
+  }
+  
+  .route-item.over {
+    border-color: green;
+  }
+  
+  .route-info {
+    font-size: 14px;
+  }
+  
+  .route-info .route-name {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .route-info .route-start {
+    font-size: 14px;
+    color: gray;
+  }
+  
+  .calculate-button {
+    padding: 0.75rem;
+    background-color: #060b14e7;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    align-self: center;
+    width: calc(100% - 2rem);
+    margin-top: auto; /* Push button to bottom */
+    transition: background 0.3s, transform 0.4s;
+  }
+  
+  .calculate-button:hover {
+    background-color: #060b14d7;
+  }
+  

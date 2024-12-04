@@ -115,6 +115,7 @@ const MapSection = () => {
     }, 100);
   };
   const moveToMarker = (lat, lng) => {
+    console.log(markers);
     if (map) {
       map.setView([lat, lng], map._zoom);
     }

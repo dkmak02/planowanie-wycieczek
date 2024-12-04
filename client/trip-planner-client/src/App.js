@@ -1,6 +1,5 @@
 import "./App.css";
 import MapSection from "./components/MainPage/MapSection";
-import ParentComponent from "./components/MainPage/ParentComponent";
 import CitySearch from "./components/StartPage/CitySearch";
 import Navbar from "./components/MainPage/Navbar";
 import RouteMapSection from "./components/PathPage/RouteMapSection";

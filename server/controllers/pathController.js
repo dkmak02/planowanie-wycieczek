@@ -29,10 +29,9 @@ const getPathsCombinations = async(input) => {
 
 exports.getPaths = async (req, res, next) => {
     const input = {
-        'A1': {'lat': 50.0539425618025, 'lon': 19.89761352539063},
-        'A2': {'lat': 50.04534479133112, 'lon': 19.933147430419925},
-        'A3': {'lat': 50.058902113365576, 'lon': 19.970054626464847},
-        'A4': {'lat': 50.070913124679485, 'lon': 19.92404937744141}
+        'raków': {'lat': 50.0619474, 'lon': 19.9368564},
+        '1233': {'lat': 50.078074222866334, 'lon': 19.884395599365238},
+        '4312': {'lat': 50.0411555759275, 'lon': 19.914436340332035}
     };
     try {
         paths = await getPathsCombinations(input)

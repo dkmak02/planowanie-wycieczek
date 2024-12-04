@@ -107,6 +107,7 @@ const CitySearch = ({ onAddCity }) => {
         )}
       </div>
 
+
       <div className="selectedCitiesContainer">
         <h3>Selected Cities</h3>
         {selectedCities.length > 0 ? (

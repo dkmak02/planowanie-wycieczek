@@ -13,7 +13,7 @@ const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onEdit(index); // Trigger edit action
+              onEdit(index); 
             }}
             className="edit-button"
           >
@@ -24,7 +24,7 @@ const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onDelete(index); // Trigger delete action
+              onDelete(index); 
             }}
             className="delete-button"
           >
