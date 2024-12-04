@@ -11,6 +11,7 @@ import L from "leaflet";
 import Sidebar from "./Sidebar";
 import MarkerForm from "./MarkerForm";
 import "./MapSection.css";
+import { useLocation } from "react-router-dom";
 
 const customIcon = L.icon({
   iconUrl: "/map_location_marker.png",
@@ -39,6 +40,7 @@ const MapClickHandler = ({ onMapClick, showForm, deleting }) => {
 };
 
 const MapSection = () => {
+  const { state } = useLocation();
   const [markers, setMarkers] = useState([]);
   const [position, setPosition] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +50,6 @@ const MapSection = () => {
   const [markerTime, setMarkerTime] = useState(30);
   const [deleting, setDeleting] = useState(false);
   const [map, setMap] = useState(null);
-  const [restingPlace, setRestingPlace] = useState(false);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -69,7 +70,11 @@ const MapSection = () => {
       setLoading(false);
     }
   }, []);
-
+  useEffect(() => {
+    if (state && state.selectedCities) {
+      setMarkers(state.selectedCities); 
+    }
+  }, [state]);
   const handleMapClick = (lat, lng) => {
     if (!showForm && !deleting) {
       setTempCoords([lat, lng]);
@@ -78,18 +83,17 @@ const MapSection = () => {
   };
 
   const handleFormSubmit = (e) => {
-    console.log(tempCoords, markerName, restingPlace, markerTime);
+    console.log(tempCoords, markerName, markerTime);
     e.preventDefault();
     setMarkers((prevMarkers) => [
       ...prevMarkers,
       {
         lat: tempCoords[0],
         lng: tempCoords[1],
+        time: markerTime,
         name: markerName,
-        isRestingPlace: restingPlace,
       },
     ]);
-    setRestingPlace(false);
     setShowForm(false);
     setMarkerName("");
     setMarkerTime(30);
@@ -124,6 +128,8 @@ const MapSection = () => {
         markers={markers}
         onDelete={handleDeleteMarker}
         onMarkerClick={moveToMarker}
+        onEdit={setMarkers}
+
       />
       <div className="map-container">
         <MapContainer
@@ -146,7 +152,7 @@ const MapSection = () => {
             <Marker
               key={index}
               position={[marker.lat, marker.lng]}
-              icon={marker.isRestingPlace ? firstMarkerIcon : customIcon}
+              icon={index === 0 ? firstMarkerIcon : customIcon}
             >
               <Popup>
                 <div className="popup-content">
@@ -170,8 +176,6 @@ const MapSection = () => {
           setMarkerName={setMarkerName}
           markerTime={markerTime}
           setMarkerTime={setMarkerTime}
-          restingPlace={restingPlace}
-          setRestingPlace={setRestingPlace}
           onSubmit={handleFormSubmit}
           onCancel={handleCancelForm}
         />

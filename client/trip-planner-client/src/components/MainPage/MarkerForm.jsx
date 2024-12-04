@@ -6,8 +6,6 @@ const MarkerForm = ({
   setMarkerName,
   markerTime,
   setMarkerTime,
-  restingPlace,
-  setRestingPlace,
   onSubmit,
   onCancel,
 }) => {
@@ -66,31 +64,8 @@ const MarkerForm = ({
             <span>720</span>
           </div>
         </div>
-        <div>
-          <div className="custom-input">
-            <input
-              type="radio"
-              id="radio-no"
-              name="restingplace"
-              value="no"
-              defaultChecked
-              onChange={() => setRestingPlace(false)}
-            />
-            <label htmlFor="radio-no">PLACE TO VISIT</label>
-          </div>
-          <div className="custom-input">
-            <input
-              type="radio"
-              id="radio-yes"
-              name="restingplace"
-              value="yes"
-              onChange={() => setRestingPlace(true)}
-            />
-            <label htmlFor="radio-yes">RESTING PLACE</label>
-          </div>
-        </div>
 
-        <button type="submit">Add Marker</button>
+        <button type="submit">Save</button>
         <button type="button" onClick={onCancel}>
           Cancel
         </button>

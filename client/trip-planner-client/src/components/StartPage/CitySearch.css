@@ -1,0 +1,70 @@
+.container {
+  padding: 20px;
+}
+
+.heading {
+  font-size: 24px;
+}
+
+.inputContainer {
+  margin-bottom: 10px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.resultsContainer {
+  margin-top: 10px;
+}
+
+.resultsList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.addButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.selectedCitiesContainer {
+  margin-top: 20px;
+}
+
+.selectedCitiesList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.selectedCityItem {
+  margin-bottom: 5px;
+}
+
+.continueButtonContainer {
+  margin-top: 20px;
+}
+
+.continueButton {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.continueButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

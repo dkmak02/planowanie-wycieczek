@@ -1,5 +1,7 @@
 import "./App.css";
 import MapSection from "./components/MainPage/MapSection";
+import ParentComponent from "./components/MainPage/ParentComponent";
+import CitySearch from "./components/StartPage/CitySearch";
 import Navbar from "./components/MainPage/Navbar";
 import RouteMapSection from "./components/PathPage/RouteMapSection";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -11,7 +13,8 @@ function App() {
         <Navbar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<MapSection />} />
+            <Route path="/" element={<CitySearch />} />
+            <Route path="/main" element={<MapSection />} />
             <Route path="/route-map" element={<RouteMapSection />} />
           </Routes>
         </div>

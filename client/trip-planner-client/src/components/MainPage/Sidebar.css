@@ -36,3 +36,26 @@
 .calculate-button:hover {
   background-color: #060b14d7;
 }
+.reorder-dropdown {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.marker-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calculate-button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.calculate-button:hover {
+  background-color: #45a049;
+}
