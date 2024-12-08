@@ -35,6 +35,7 @@ const RouteMapSection = ({ setRouteData }) => {
   useEffect(() => {
     if (state && state.result) {
       const { result } = state;
+      console.log(result);
       const filteredDataArray = Object.entries(result.filteredData).map(([day, routes]) => ({
         day,
         routes,
