@@ -43,18 +43,10 @@
   padding: 5px;
 }
 
-.calculate-button {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  cursor: pointer;
+.calculate-button:hover {
+  background-color: #060b14d7;
 }
 
-.calculate-button:hover {
-  background-color: #45a049;
-}
 .marker-item:hover {
   background: #eee;
 }

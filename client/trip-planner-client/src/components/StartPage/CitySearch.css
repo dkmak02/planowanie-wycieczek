@@ -1,77 +1,35 @@
-/* CitySearch.css */
-
-/* Global Styles */
-:root {
-  --primary-color: #007bff;
-  --secondary-color: #4caf50;
-  --danger-color: #dc3545;
-  --text-color: #333;
-  --background-color: #f9f9f9;
-  --border-color: #ddd;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --hover-shadow: rgba(0, 0, 0, 0.15);
-  --font-family: Arial, sans-serif;
-}
-
-body {
-  font-family: var(--font-family);
-  margin: 0;
-  padding: 0;
-  background-color: #fafafa;
-}
-
-/* Container */
 .container {
-  width: 90%;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: var(--background-color);
-  box-shadow: 0 4px 8px var(--shadow-color);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
   border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .heading {
-  font-size: 1.8rem;
-  font-weight: bold;
+  font-size: 24px;
   text-align: center;
-  margin-bottom: 1.5rem;
-  color: var(--text-color);
+  margin-bottom: 20px;
 }
 
-/* Input Section */
 .inputContainer {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .input {
   width: 100%;
-  max-width: 400px;
-  padding: 0.8rem;
-  font-size: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input:focus {
-  border-color: var(--primary-color);
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-}
-
-/* Results Section */
-.resultsContainer {
-  max-width: 400px;
-  margin: 0 auto;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.resultsContainer {
+  margin-bottom: 20px;
 }
 
 .resultsList {
-  max-height: 300px; /* Set a maximum height for scrollable results */
-  overflow-y: auto;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -82,95 +40,83 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  margin-bottom: 8px;
-  transition: box-shadow 0.3s ease;
-}
-
-.resultItem:hover {
-  box-shadow: 0 4px 8px var(--hover-shadow);
+  border-bottom: 1px solid #eee;
 }
 
 .addButton {
-  background-color: var(--secondary-color);
-  color: #fff;
-  padding: 0.4rem 0.8rem;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
 }
 
 .addButton:hover {
-  background-color: #218838;
+  background-color: #45a049;
 }
 
-.addButton:focus {
-  outline: none;
+/* Scrollable container styles for results */
+.resultsContainer {
+  max-height: 200px; /* Limit the height */
+  overflow-y: auto;  /* Enable vertical scrolling */
+  padding-right: 5px; /* Add space for scrollbar */
 }
 
-/* Continue Button */
-.continueButtonContainer {
-  text-align: center;
-  margin-top: 2rem;
+.selectedCitiesContainer {
+  margin-bottom: 20px;
 }
 
-.continueButton {
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+/* Style the header of the selected cities list to stay fixed */
+.selectedCitiesHeader {
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
-.continueButton:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.continueButton:hover:not(:disabled) {
-  background-color: #0056b3;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Misc */
-p {
-  text-align: center;
-  color: #777;
-  font-size: 0.9rem;
+.selectedCitiesList {
+  list-style-type: none;
+  padding: 0;
   margin: 0;
+  max-height: 200px; /* Limit the height */
+  overflow-y: auto;  /* Enable vertical scrolling */
+  padding-right: 5px; /* Add space for scrollbar */
 }
 
 .selectedCityItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff;
-  padding: 0.8rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid var(--border-color);
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.deleteButton {
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
   border-radius: 4px;
-  transition: box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-.selectedCityItem:hover {
-  box-shadow: 0 4px 8px var(--hover-shadow);
+.deleteButton:hover {
+  background-color: #e53935;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-  .container {
-    width: 95%;
-  }
+.continueButtonContainer {
+  text-align: center;
+  margin-top: 20px;
+}
 
-  .input {
-    width: 100%;
-  }
+.continueButton {
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.continueButton:hover {
+  background-color: #1976d2;
 }

@@ -1,13 +1,13 @@
 import React from "react";
 
-const RouteInfo = ({ route }) => {
+const RouteInfo = ({ location }) => {
   return (
     <div className="route-info">
       <div className="route-name">
-        <strong>{route.start || "Route Name"}</strong>
+        <strong>{location.name || "Route Name"}</strong>
       </div>
       <div className="route-start">
-        <span>{route.startPoint || "Start Point: Not Available"}</span>
+        <span>Time needed: {location.time || "Start Point: Not Available"}</span>
       </div>
     </div>
   );

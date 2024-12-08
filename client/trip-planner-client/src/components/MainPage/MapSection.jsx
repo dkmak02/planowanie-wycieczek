@@ -94,6 +94,7 @@ const MapSection = () => {
         lng: tempCoords[1],
         time: markerTime,
         name: markerName,
+        isStartingPoint: false,
       },
     ]);
     setShowForm(false);

@@ -20,11 +20,6 @@ const Navbar = () => {
     <div>
       <nav className="navbar">
         <Link to="/"> <h1 className = "name">Trip Planner</h1></Link>
-        <ul className="nav-links">
-          <li>
-            <Link to="/route-map">Route Map</Link>{" "}
-          </li>
-        </ul>
         <div className="upload-box">
           {location.pathname === "/" && (
             <button onClick={handleUploadClick} className="upload-button">

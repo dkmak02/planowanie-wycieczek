@@ -1,7 +1,8 @@
 import React from "react";
 import "./UploadJson.css";
-
+import { useNavigate } from "react-router-dom";
 const UploadJson = ({ onClose }) => {
+  const navigate = useNavigate();
   const handleOutsideClick = (event) => {
     if (event.target.className.includes("upload-modal")) {
       onClose();
@@ -14,8 +15,7 @@ const UploadJson = ({ onClose }) => {
       reader.onload = (e) => {
         try {
           const jsonData = JSON.parse(e.target.result);
-          console.log("Uploaded JSON Data:", jsonData);
-          alert("File uploaded successfully!");
+          navigate("/route-map", { state: { result:jsonData } });
         } catch (err) {
           alert("Invalid JSON file!");
         }

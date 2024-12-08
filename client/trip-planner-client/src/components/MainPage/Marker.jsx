@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Marker.css";
 
 const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {

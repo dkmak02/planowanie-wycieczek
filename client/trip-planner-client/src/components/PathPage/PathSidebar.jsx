@@ -3,19 +3,20 @@ import { useDrag, useDrop } from "react-dnd";
 import './PathSidebar.css';  
 import RouteInfo from "./RouteInfo";
 
-const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes }) => {
+const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes}) => {
   const [selectedDays, setSelectedDays] = useState({});
-
-  // Set default visibility for all days to true
   useEffect(() => {
     const defaultSelectedDays = {};
-    Object.keys(routesData).forEach((day) => {
-      defaultSelectedDays[day] = true; // Default to true (checked)
+    routesData.forEach(({ day }) => {
+      if (visibleRoutes[day] !== undefined) {
+        defaultSelectedDays[day] = visibleRoutes[day];
+      } else {
+      defaultSelectedDays[day] = true; 
+      }
     });
     setSelectedDays(defaultSelectedDays);
   }, [routesData]);
 
-  // Update the visibleRoutes state when selectedDays changes
   useEffect(() => {
     setVisibleRoutes(selectedDays);
   }, [selectedDays, setVisibleRoutes]);
@@ -30,13 +31,13 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes }) => {
   return (
     <div className="sidebar">
       <h3>Days</h3>
-      {Object.entries(routesData).map(([day, routes], dayIndex) => (
+      {routesData.map(({ day, locations }, dayIndex) => (
         <div key={`sidebar-${dayIndex}`} className="day-section">
           <h4>
             <input
               type="checkbox"
-              checked={selectedDays[day] || false}  // Set default to true (checked)
-              onChange={() => handleDayToggle(day)}
+              checked={selectedDays[day] || false}  // Keep the state persistent here
+              onChange={() => handleDayToggle(day)} // Update only when the checkbox is clicked
             />
             {day}
           </h4>
@@ -44,15 +45,16 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes }) => {
             className="day-routes"
             style={{ display: "flex", flexDirection: "column", gap: "10px" }}
           >
-            {routes.map((route, routeIndex) => (
-              <DraggableRoute
-                key={`route-${routeIndex}`}
-                day={day}
-                route={route}
-                routeIndex={routeIndex}
-                moveRoute={moveRoute}
-              />
-            ))}
+            {(Array.isArray(locations) ? locations : [])
+              .map((location, locationIndex) => (
+                <DraggableRoute
+                  key={`location-${locationIndex}`}
+                  day={day}
+                  location={location}
+                  locationIndex={locationIndex}
+                  moveRoute={moveRoute}
+                />
+              ))}
           </div>
         </div>
       ))}
@@ -61,27 +63,23 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes }) => {
 };
 
 // DraggableRoute component with drag-and-drop functionality
-const DraggableRoute = ({ day, route, routeIndex, moveRoute }) => {
-  // Define the drag behavior using react-dnd
+const DraggableRoute = ({ day, location, locationIndex, moveRoute }) => {
   const [{ isDragging }, drag] = useDrag({
     type: "route",
-    item: { day, routeIndex },
+    item: { day, locationIndex },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  // Define the drop behavior using react-dnd
   const [{ isOver }, drop] = useDrop({
     accept: "route",
     drop: (item) => {
-      // Handle moving routes within the same day or across different days
+      // Preserve the selectedDays state during drag-and-drop operation
       if (item.day === day) {
-        // Move within the same day
-        moveRoute(item.day, item.routeIndex, day, routeIndex);
+        moveRoute(item.day, item.locationIndex, day, locationIndex);
       } else {
-        // Move between different days
-        moveRoute(item.day, item.routeIndex, day, routeIndex);
+        moveRoute(item.day, item.locationIndex, day, locationIndex);
       }
     },
     collect: (monitor) => ({
@@ -100,7 +98,7 @@ const DraggableRoute = ({ day, route, routeIndex, moveRoute }) => {
         cursor: "move",
       }}
     >
-      <RouteInfo route={route} />
+      <RouteInfo location={location} />
     </div>
   );
 };
