@@ -1,17 +1,9 @@
 import React from "react";
 
-const DownloadJson = () => {
+const DownloadJson = ({ data }) => { // Accept data as a prop
   const handleDownload = () => {
-    const sampleData = {
-      routes: [
-        { start: "A1", end: "A2", distance: "5km" },
-        { start: "A2", end: "A3", distance: "7km" },
-      ],
-    };
-
     const fileName = "route-data.json";
-    const jsonStr = JSON.stringify(sampleData, null, 2);
-
+    const jsonStr = JSON.stringify(data, null, 2); // Use the passed data
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 

@@ -1,74 +1,172 @@
-/* PathSidebar.css */
-
 .sidebar {
-    position: absolute; /* Change to absolute positioning */
-    right: 0; /* Align to the left */
-    width: 400px; /* Fixed width for the sidebar */
-    height: 100vh;
-    background-color: rgba(244, 244, 244, 0.85); /* Semi-transparent background */
-    display: flex;
-    flex-direction: column;
+  position: absolute; /* Positioning the sidebar absolutely */
+  right: 0; /* Align it to the right */
+  width: 400px; /* Set a fixed width */
+  height: 100vh; /* Full height of the viewport */
+  background-color: rgba(244, 244, 244, 0.85); /* Semi-transparent background */
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  max-height: 100vh; /* Ensures it doesn't exceed the viewport height */
+  z-index: 10; /* Ensure sidebar is above other elements */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Adds a shadow for separation */
+  overflow-y: auto; /* Allows vertical scrolling */
+}
+
+.sidebar h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Section for each day */
+.day-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for each day section */
+}
+
+/* Day label */
+/* Style for the day text */
+.day-section h4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.day-header span {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day-header span.cut {
+  text-decoration: line-through; /* Apply the cut effect */
+  color: gray;  /* Change color to gray for cut days */
+}
+
+
+/* Checkbox styling */
+.day-section input[type="checkbox"] {
+  accent-color: #060b14; /* Dark color for checkbox */
+  transform: scale(1.2); /* Make checkbox slightly larger */
+}
+
+
+
+.day-routes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.route-item {
+  padding: 8px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: move;
+  border-radius: 8px; /* Rounded corners */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.route-item:hover {
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add hover shadow effect */
+}
+
+/* Styling when dragging a route */
+.route-item.dragging {
+  opacity: 0.5; /* Make dragging item more transparent */
+}
+
+/* Styling for route being hovered over */
+.route-item.over {
+  border-color: green;; /* Change border color when hovered over */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); /* Add soft glow effect on hover */
+}
+
+/* Route info */
+.route-info {
+  font-size: 14px;
+  color: #333;
+}
+
+.route-info .route-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #060b14; /* Dark color for route name */
+}
+
+.route-info .route-start {
+  font-size: 14px;
+  color: gray;
+}
+
+/* Button for calculation at the bottom */
+.calculate-button {
+  padding: 0.75rem;
+  background-color: #060b14;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  align-self: center;
+  width: calc(100% - 2rem); /* Full width minus padding */
+  margin-top: auto; /* Push button to the bottom */
+  transition: background 0.3s, transform 0.4s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button hover effect */
+.calculate-button:hover {
+  background-color: #060b14d7;
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.calculate-button:active {
+  background-color: #060b14cc;
+  transform: scale(1); /* Reset the zoom effect on click */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
     padding: 1rem;
-    max-height: calc(100vh - 50px); /* Full height minus navbar */
-    z-index: 10; /* Ensure sidebar is above the map */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a slight shadow for better separation */
-  }
-  
-  .day-section {
-    margin-bottom: 1rem;
-  }
-  
-  .day-routes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .route-item {
-    padding: 8px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    cursor: move;
-    margin-bottom: 10px;
-  }
-  
-  .route-item.dragging {
-    opacity: 0.5;
-  }
-  
-  .route-item.over {
-    border-color: green;
-  }
-  
-  .route-info {
-    font-size: 14px;
-  }
-  
-  .route-info .route-name {
-    font-weight: bold;
-    font-size: 16px;
-  }
-  
-  .route-info .route-start {
-    font-size: 14px;
-    color: gray;
   }
   
   .calculate-button {
-    padding: 0.75rem;
-    background-color: #060b14e7;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    align-self: center;
-    width: calc(100% - 2rem);
-    margin-top: auto; /* Push button to bottom */
-    transition: background 0.3s, transform 0.4s;
+    width: 100%; /* Make the button full-width on smaller screens */
   }
-  
-  .calculate-button:hover {
-    background-color: #060b14d7;
-  }
-  
+}
+/* Custom Scrollbar Styling */
+.sidebar::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #888; /* Scroll thumb color */
+  border-radius: 4px; /* Rounded corners */
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Scroll thumb color on hover */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+  border-radius: 4px; /* Rounded corners */
+}
+
+
+/* PathSidebar styles */
+
+
+
+
+/* Styling for route items */

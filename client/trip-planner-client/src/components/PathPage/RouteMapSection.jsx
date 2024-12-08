@@ -23,7 +23,7 @@ const dayColors = {
   day5: "orange",
 };
 
-const RouteMapSection = () => {
+const RouteMapSection = ({ setRouteData }) => {
   const { state } = useLocation();
   const [startingPoint, setStartingPoint] = useState(null);
   const [filteredRoutesData, setFilteredRoutesData] = useState([]); // Initialize as an array
@@ -44,7 +44,9 @@ const RouteMapSection = () => {
       setFilteredRoutesData(filteredDataArray);
       setAllRoutesData(result.allData);
       setPointsData(result.locations);
+      setRouteData(result);
     }
+    
   }, [state]);
 
   // Update sidebar data when routesData, startingPoint, or pointsData change
@@ -75,6 +77,20 @@ const RouteMapSection = () => {
       });
 
       setSidebarData(updatedSidebarData);
+      //update filteredData in setRouteData
+      setRouteData((prevData) => {
+        // Transform `filteredRoutesData` into the desired format
+        const transformedData = filteredRoutesData.reduce((acc, item) => {
+          acc[item.day] = item.routes; // Group routes by `day`
+          return acc;
+        }, {});
+      
+        // Update the routeData state
+        return {
+          ...prevData,
+          filteredData: transformedData,
+        };
+      });
     }
   }, [filteredRoutesData, startingPoint, pointsData]);
   const adjustRoutesInSameDay = (day, sidebarDataIndex) => {
@@ -87,6 +103,7 @@ const RouteMapSection = () => {
           route.start === pair[0] && route.end === pair[1]
       );
       if (route) {
+        route.aggTime =route.path[route.path.length - 1].agg_cost
         newRoutes.push(route);
       }
     });
@@ -94,7 +111,6 @@ const RouteMapSection = () => {
     const updatedFilteredRoutesData = [...filteredRoutesData];
     updatedFilteredRoutesData[filteredRoutesIndex].routes = newRoutes;
     setFilteredRoutesData(updatedFilteredRoutesData);
-    console.log(updatedFilteredRoutesData);
   };
 
   const moveRoute = (draggedDay, draggedRouteIndex, droppedDay, droppedRouteIndex) => {
