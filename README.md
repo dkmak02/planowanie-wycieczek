@@ -89,4 +89,21 @@ Aby uruchomić projekt, wykonaj następujące kroki:
    ```bash
    git clone https://github.com/dkmak02/planowanie-wycieczek.git
    cd planowanie-wycieczek
+   ```
+### 3. Zbuduj obrazy Docker:
+   ```bash
+   docker build
+   ```
+### 4. Uruchom kontenery:
+   ```bash
+   docker up
+   ```
+### 5. Uruchom przeglądarke:
+- **Otwórz przeglądarkę i przejdź pod adres:**: 
+  [Aplikacja]( http://localhost:3000)
+### 6. Zatrzymanie kontenerów:
+   ```bash
+   docker down
+   ```
+
 
