@@ -76,11 +76,17 @@ Poniżej znajduje się diagram ilustrujący główny proces działania aplikacji
 
 Aby uruchomić projekt, wykonaj następujące kroki:
 
-1. **Zainstaluj wymagane narzędzia**:
-   - Zainstaluj Docker i Docker Compose.
-   - Zainstaluj Java, jeśli chcesz używać `osm2po`.
+### 1. Zainstaluj wymagane narzędzia:
 
-2. **Sklonuj repozytorium**:
+- **Docker i Docker Compose**: 
+  - Docker: [Instalacja Docker](https://www.docker.com/get-started)
+  - Docker Compose: [Instalacja Docker Compose](https://docs.docker.com/compose/install/)
+  
+- **Java (wymagane do używania osm2po)**:
+  - Java: [Pobierz Java JDK](https://adoptopenjdk.net/)
+  
+### 2. Sklonuj repozytorium:
    ```bash
    git clone https://github.com/dkmak02/planowanie-wycieczek.git
    cd planowanie-wycieczek
+
