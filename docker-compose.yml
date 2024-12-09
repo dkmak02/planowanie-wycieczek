@@ -1,12 +1,46 @@
-version: '3.9'
+version: "3.8"
 
 services:
+  postgres:
+    image: postgis/postgis:latest
+    container_name: trip-planner-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=tripplanner
+      - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=tripplanner_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sqlscripts/setup_data.sql:/docker-entrypoint-initdb.d/setup_data.sql
+    networks:
+      - backend
+  server:
+    build:
+      context: ./server
+    ports:
+      - "4000:4000"
+    volumes:
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - postgres  
   client:
     build:
       context: ./client
     ports:
-      - "3000:80" 
+      - "3000:80"
     volumes:
-      - /app/node_modules 
+      - /app/node_modules
     environment:
       - NODE_ENV=production
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge

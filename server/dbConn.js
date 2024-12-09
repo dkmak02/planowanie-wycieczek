@@ -3,11 +3,11 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './process.env' });
 require('dotenv').config();
 
-const dbHost = process.env.DB_HOST;
-const dbPort = process.env.DB_PORT;
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PASSWORD;
-const dbName = process.env.DB_NAME;
+const dbHost = process.env.DB_HOST || 'postgres';
+const dbPort = process.env.DB_PORT || 5432;
+const dbUser = process.env.DB_USER || 'tripplanner';
+const dbPassword = process.env.DB_PASSWORD || 'yourpassword';
+const dbName = process.env.DB_NAME || 'tripplanner_db';
 const connection = {
   host: dbHost,    
   port: dbPort,         
