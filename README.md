@@ -1,5 +1,8 @@
 # Planowanie Wycieczek
 
+**Important**: Obecnie można korzystać jedynie z funkcji **upload JSON**, ponieważ pobieranie danych z Geofabrik nie działa. Przykładowy plik z wyliczonymi trasami znajduje się w folderze **testdata**.
+
+---
 ## Spis Treści
 
 1. [Używane technologie](#używane-technologie)
