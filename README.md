@@ -99,7 +99,7 @@ Aby uruchomić projekt, wykonaj następujące kroki:
    docker up
    ```
 ### 5. Uruchom przeglądarke:
-- **Otwórz przeglądarkę i przejdź pod adres:**: 
+- **Otwórz przeglądarkę i przejdź pod adres:** 
   [http://localhost:3000](http://localhost:3000)
 ### 6. Zatrzymanie kontenerów:
    ```bash
