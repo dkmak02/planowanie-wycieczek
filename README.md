@@ -31,17 +31,10 @@ Projekt używa PostgreSQL z rozszerzeniami PostGIS i pgRouting. Dane OSM są imp
 
 ## Dokumentacja dla HTTP API
 
-### Online
-
-Dokumentacja API dla aplikacji dostępna jest pod adresem:
-[http://localhost:5000/docs](http://localhost:5000/docs)
-
-Dokumentacja ta zawiera szczegóły dotyczące dostępnych punktów końcowych (endpoints), metod HTTP oraz struktury odpowiedzi API.
-
 ### Local
 
 Jeśli chcesz uruchomić lokalną wersję dokumentacji API, uruchom aplikację i odwiedź:
-[http://localhost:5000/docs](http://localhost:5000/docs)
+[http://localhost:5000/docs](http://localhost:4000/docs)
 
 Dokumentacja jest generowana automatycznie przy użyciu narzędzia `swagger` lub `apidoc`.
 
