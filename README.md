@@ -8,7 +8,7 @@
    - [Online](#online)
    - [Local](#local)
 4. [Flowchart](#flowchart)
-5. [Requirements](#requirements)
+5. [Wymagania](#requirements)
 6. [Uruchomienie](#uruchomienie)
 
 ---
