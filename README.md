@@ -7,12 +7,9 @@
 3. [Dokumentacja dla HTTP API](#dokumentacja-dla-http-api)
    - [Online](#online)
    - [Local](#local)
-4. [Dokumentacja dla WebSockets](#dokumentacja-dla-websockets)
-   - [Online](#online-1)
-   - [Local](#local-1)
-5. [Flowchart](#flowchart)
-6. [Requirements](#requirements)
-7. [Uruchomienie](#uruchomienie)
+4. [Flowchart](#flowchart)
+5. [Requirements](#requirements)
+6. [Uruchomienie](#uruchomienie)
 
 ---
 
@@ -47,22 +44,6 @@ Jeśli chcesz uruchomić lokalną wersję dokumentacji API, uruchom aplikację i
 [http://localhost:5000/docs](http://localhost:5000/docs)
 
 Dokumentacja jest generowana automatycznie przy użyciu narzędzia `swagger` lub `apidoc`.
-
----
-
-## Dokumentacja dla WebSockets
-
-### Online
-
-WebSocket API dla aplikacji jest dostępne pod adresem:
-[ws://localhost:5000/socket](ws://localhost:5000/socket)
-
-Dzięki WebSocket, aplikacja umożliwia dwukierunkową komunikację w czasie rzeczywistym, na przykład do śledzenia zmian w czasie rzeczywistym lub komunikacji użytkowników.
-
-### Local
-
-Lokalnie WebSocket działa pod adresem:
-[ws://localhost:5000/socket](ws://localhost:5000/socket)
 
 ---
 
