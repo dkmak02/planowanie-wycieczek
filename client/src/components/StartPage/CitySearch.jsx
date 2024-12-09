@@ -25,14 +25,19 @@ const CitySearch = ({ onAddCity }) => {
 
       const data = await response.json();
 
-      setSearchResults(data);
-      setAllSearchResults(data); 
-    } catch (error) {
-      console.error("Error searching for cities:", error);
-      setSearchResults([]);
-      setAllSearchResults([]);
-    }
-  };
+    const uniqueResults = data.filter(
+      (city, index, self) =>
+        index === self.findIndex((c) => c.display_name === city.display_name)
+    );
+
+    setSearchResults(uniqueResults);
+    setAllSearchResults(uniqueResults);
+  } catch (error) {
+    console.error("Error searching for cities:", error);
+    setSearchResults([]);
+    setAllSearchResults([]);
+  }
+};
 
   const handleInputChange = (e) => {
     const query = e.target.value;

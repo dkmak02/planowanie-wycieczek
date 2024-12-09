@@ -61,6 +61,10 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
 
   const handleSaveMarker = (e) => {
     e.preventDefault();
+    if (markers.some((marker, idx) => marker.name.toLowerCase() === markerName.toLowerCase() && idx !== editingIndex)) {
+      alert("Marker name must be unique. Please choose a different name.");
+      return;
+    }
     const updatedMarkers = [...markers];
     updatedMarkers[editingIndex] = {
       ...updatedMarkers[editingIndex],
