@@ -100,7 +100,7 @@ Aby uruchomić projekt, wykonaj następujące kroki:
    ```
 ### 5. Uruchom przeglądarke:
 - **Otwórz przeglądarkę i przejdź pod adres:**: 
-  [Aplikacja]( http://localhost:3000)
+  [http://localhost:3000](http://localhost:3000)
 ### 6. Zatrzymanie kontenerów:
    ```bash
    docker down
