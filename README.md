@@ -1,5 +1,13 @@
 # Planowanie Wycieczek
 
+---
+
+## ⚠️ Important
+
+Obecnie można korzystać jedynie z funkcji **upload JSON**, ponieważ pobieranie danych z Geofabrik nie działa. Przykładowy plik z wyliczonymi trasami znajduje się w folderze **testdata**.
+
+---
+
 ## Spis Treści
 
 1. [Używane technologie](#używane-technologie)
@@ -34,7 +42,7 @@ Projekt używa PostgreSQL z rozszerzeniami PostGIS i pgRouting. Dane OSM są imp
 ### Local
 
 Jeśli chcesz uruchomić lokalną wersję dokumentacji API, uruchom aplikację i odwiedź:
-[http://localhost:5000/docs](http://localhost:4000/docs)
+[http://localhost:4000/docs](http://localhost:4000/docs)
 
 Dokumentacja jest generowana automatycznie przy użyciu narzędzia `swagger` lub `apidoc`.
 
@@ -85,18 +93,18 @@ Aby uruchomić projekt, wykonaj następujące kroki:
    ```
 ### 3. Zbuduj obrazy Docker:
    ```bash
-   docker build
+   docker-compose build
    ```
 ### 4. Uruchom kontenery:
    ```bash
-   docker up
+   docker-compose up
    ```
 ### 5. Uruchom przeglądarke:
 - **Otwórz przeglądarkę i przejdź pod adres:** 
   [http://localhost:3000](http://localhost:3000)
 ### 6. Zatrzymanie kontenerów:
    ```bash
-   docker down
+   docker-compose down
    ```
 
 
