@@ -4,7 +4,7 @@
 
 ## ⚠️ Important
 
-Obecnie można korzystać jedynie z funkcji **upload JSON**, ponieważ pobieranie danych z Geofabrik nie działa. Przykładowy plik z wyliczonymi trasami znajduje się w folderze **testdata**.
+Obecnie można korzystać jedynie z punktów znajdujących sie na terenie województwa opolskiego :)
 
 ---
 
