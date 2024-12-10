@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgis/postgis:latest
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     container_name: trip-planner-db
     ports:
       - "5432:5432"
@@ -12,9 +14,10 @@ services:
       - POSTGRES_DB=tripplanner_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./sqlscripts:/docker-entrypoint-initdb.d  
+      - ./db:/docker-entrypoint-initdb.d
     networks:
       - backend
+
   osm2po:
     image: openjdk:8-jre-slim
     container_name: osm2po-container
@@ -26,7 +29,7 @@ services:
       - backend
     depends_on:
       - postgres
-  
+
   server:
     build:
       context: ./server
@@ -36,6 +39,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=production
+    networks:
+      - backend
     depends_on:
       - postgres
 
@@ -48,6 +53,8 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=production
+    networks:
+      - backend
     depends_on:
       - server
 

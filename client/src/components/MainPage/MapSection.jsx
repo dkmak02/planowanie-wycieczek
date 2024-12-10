@@ -85,7 +85,6 @@ const MapSection = () => {
   };
 
   const handleFormSubmit = (e) => {
-    console.log(tempCoords, markerName, markerTime);
     e.preventDefault();
     if (markers.some((marker) => marker.name.toLowerCase() === markerName.toLowerCase())) {
       alert("Marker name must be unique. Please choose a different name.");

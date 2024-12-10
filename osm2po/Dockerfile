@@ -20,7 +20,7 @@ RUN unzip -o osm2po-5.5.11.zip && \
 RUN ls -l /usr/src/app
 
 # Create directories for data and sql scripts
-RUN mkdir -p /osm_data /usr/src/app/sqlscripts /usr/src/app/hh
+RUN mkdir -p /osm_data && mkdir -p /usr/src/app/hh
 
 # Expose the port for web service (if needed)
 EXPOSE 8889
