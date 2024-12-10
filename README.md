@@ -93,18 +93,18 @@ Aby uruchomić projekt, wykonaj następujące kroki:
    ```
 ### 3. Zbuduj obrazy Docker:
    ```bash
-   docker build
+   docker-compose build
    ```
 ### 4. Uruchom kontenery:
    ```bash
-   docker up
+   docker-compose up
    ```
 ### 5. Uruchom przeglądarke:
 - **Otwórz przeglądarkę i przejdź pod adres:** 
   [http://localhost:3000](http://localhost:3000)
 ### 6. Zatrzymanie kontenerów:
    ```bash
-   docker down
+   docker-compose down
    ```
 
 
