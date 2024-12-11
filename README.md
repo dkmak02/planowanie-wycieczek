@@ -62,7 +62,6 @@ Poniżej znajduje się diagram ilustrujący główny proces działania aplikacji
 ### Minimalne wymagania systemowe:
 
 - **System operacyjny**: Linux, macOS, Windows
-- **Java**: Wersja 8 lub nowsza (wymagane do uruchomienia `osm2po`)
 - **Docker**: Wersja 19.03 lub nowsza
 - **Docker Compose**: Wersja 1.25 lub nowsza
 
@@ -83,9 +82,6 @@ Aby uruchomić projekt, wykonaj następujące kroki:
 - **Docker i Docker Compose**: 
   - Docker: [Instalacja Docker](https://www.docker.com/get-started)
   - Docker Compose: [Instalacja Docker Compose](https://docs.docker.com/compose/install/)
-  
-- **Java (wymagane do używania osm2po)**:
-  - Java: [Pobierz Java JDK](https://adoptopenjdk.net/)
   
 ### 2. Sklonuj repozytorium:
    ```bash
