@@ -4,7 +4,8 @@
 
 ## ⚠️ Important
 
-Obecnie można korzystać jedynie z punktów znajdujących sie na terenie województwa opolskiego :)
+Obecnie dostępne są jedynie punkty znajdujące się na terenie województwa opolskiego.  
+(Możliwość zaimportowania innych danych ręcznie opisana jest w punkcie 3 instrukcji uruchomienia)
 
 ---
 
