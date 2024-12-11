@@ -13,14 +13,12 @@ const getPathsCombinations = async (input) => {
           const startLon = input[i].lng;
           const endLat = input[j].lat;
           const endLon = input[j].lng;
-          console.log('Querying:', startLat, startLon, endLat, endLon);
   
           try {
             const result = await db.query(
               "SELECT * FROM find_shortest_path($1, $2, $3, $4)",
               [startLat, startLon, endLat, endLon]
             );
-            console.log('Query successful:', result);
             results.push({
               start: input[i].name,
               end: input[j].name,
@@ -28,7 +26,7 @@ const getPathsCombinations = async (input) => {
             });
           } catch (error) {
             console.error('Query failed:', error.message);
-            throw error; // Ensure to propagate the error to avoid partial results
+            throw error; 
           }
         }
       }
@@ -42,7 +40,6 @@ const findStartingPoint = async(input) => {
 exports.getPaths = async (req, res, next) => {
     try {
         startingPoint = await findStartingPoint(req.body)
-        console.log(startingPoint)
         paths = await getPathsCombinations(req.body)
         decodedPaths = await decodeAllData(paths)
         filteredPaths = filterApiData(decodedPaths, startingPoint)
@@ -51,8 +48,6 @@ exports.getPaths = async (req, res, next) => {
             filteredData: filteredPaths,
             allData: decodedPaths,
         };
-
-        fs.writeFileSync('./filteredData.json', JSON.stringify(data, null, 2));
         res.status(200).json({
             status: 'success',
             data
