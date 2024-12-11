@@ -91,18 +91,20 @@ Aby uruchomić projekt, wykonaj następujące kroki:
    git clone https://github.com/dkmak02/planowanie-wycieczek.git
    cd planowanie-wycieczek
    ```
-### 3. Zbuduj obrazy Docker:
+### 3. Pobierania danych
+  Pobierz plik w formacie .osm.pbf z Geofabrik, a następnie zmień jego nazwę na data.osm.pbf i umieść go w folderze osm_data.
+### 4. Zbuduj obrazy Docker:
    ```bash
    docker-compose build
    ```
-### 4. Uruchom kontenery:
+### 5. Uruchom kontenery:
    ```bash
    docker-compose up
    ```
-### 5. Uruchom przeglądarke:
+### 6. Uruchom przeglądarke:
 - **Otwórz przeglądarkę i przejdź pod adres:** 
   [http://localhost:3000](http://localhost:3000)
-### 6. Zatrzymanie kontenerów:
+### 7. Zatrzymanie kontenerów:
    ```bash
    docker-compose down
    ```
