@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 # Install necessary utilities and dependencies
 RUN apt-get update && \
-    apt-get install -y wget curl unzip bash && \
+    apt-get install -y wget curl unzip bash dos2unix && \
     apt-get clean
 
 # Download osm2po zip file
@@ -28,8 +28,8 @@ EXPOSE 8889
 # Copy the .sh script into the container
 COPY osm2po.sh /usr/src/app/osm2po.sh
 
-# Set the .sh script as executable
-RUN chmod +x /usr/src/app/osm2po.sh
+# Ensure the script has Unix line endings and is executable
+RUN dos2unix /usr/src/app/osm2po.sh && chmod +x /usr/src/app/osm2po.sh
 
 # Set the default command to run the script
 CMD ["/usr/src/app/osm2po.sh"]

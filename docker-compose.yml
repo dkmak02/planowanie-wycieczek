@@ -19,19 +19,16 @@ services:
       - backend
 
   osm2po:
-    image: openjdk:8-jre-slim
-    container_name: osm2po-container
     build:
       context: ./osm2po
       dockerfile: Dockerfile
+    container_name: osm2po-container
     volumes:
       - ./osm_data:/osm_data
-    command: /bin/bash -c 'if [ ! -f /usr/src/app/sqlscripts/hh_2po_4pgr.sql ]; then ./osm2po.sh /osm_data/opolskie-latest.osm.pbf; else echo "hh_2po_4pgr.sql already exists, skipping osm2po"; fi'
     depends_on:
       - postgres
     networks:
       - backend
-
 
   server:
     build:
@@ -50,7 +47,7 @@ services:
       resources:
         limits:
           memory: 512M
-          cpus: '0.5'
+          cpus: "0.5"
 
   client:
     build:
