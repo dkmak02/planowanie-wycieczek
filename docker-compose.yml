@@ -9,9 +9,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=tripplanner
-      - POSTGRES_PASSWORD=yourpassword
-      - POSTGRES_DB=tripplanner_db
+      POSTGRES_USER: tripplanner
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: tripplanner_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db:/docker-entrypoint-initdb.d

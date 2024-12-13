@@ -9,7 +9,7 @@ const dbUser = process.env.DB_USER || 'tripplanner';
 const dbPassword = process.env.DB_PASSWORD || 'yourpassword';
 const dbName = process.env.DB_NAME || 'tripplanner_db';
 const connection = {
-  host: 'postgres',    
+  host: dbHost,    
   port: dbPort,         
   database: dbName,     
   user: dbUser,       
