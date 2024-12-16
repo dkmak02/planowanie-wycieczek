@@ -66,7 +66,7 @@ BEGIN
         start_node,
         end_node,
         directed := false,
-		heuristic := 0
+		heuristic := 4
     ) AS pt
     JOIN hh_2po_4pgr AS r ON r.id = pt.edge
     WHERE pt.edge IS NOT NULL;
