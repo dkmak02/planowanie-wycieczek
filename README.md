@@ -43,9 +43,9 @@ Projekt używa PostgreSQL z rozszerzeniami PostGIS i pgRouting. Dane OSM są imp
 ### Local
 
 Jeśli chcesz uruchomić lokalną wersję dokumentacji API, uruchom aplikację i odwiedź:
-[http://localhost:4000/docs](http://localhost:4000/docs)
+[http://localhost:4000/api-docs/](http://localhost:4000/api-docs/)
 
-Dokumentacja jest generowana automatycznie przy użyciu narzędzia `swagger` lub `apidoc`.
+Dokumentacja jest generowana automatycznie przy użyciu narzędzia `swagger`.
 
 ---
 
