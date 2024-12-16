@@ -8,6 +8,7 @@ import PathSidebar from "../components/PathSidebar";
 import "leaflet/dist/leaflet.css";
 import "./../styles/RouteMapSection.css";
 import Loading from "../utilities/Loading";
+import { use } from "react";
 
 const firstMarkerIcon = L.icon({
   iconUrl: "/map_starter_marker.png",
@@ -58,21 +59,24 @@ const RouteMapSection = ({ setRouteData }) => {
     });
       const startingLocation = result.locations.find((location) => location.isStartingPoint);
       setStartingPoint(startingLocation);
+      console.log(startingLocation)
       setFilteredRoutesData(filteredDataArray);
       setAllRoutesData(result.allData);
       setPointsData(result.locations);
       setRouteData(result);
       setPosition([startingLocation.lat, startingLocation.lng]);
-      map.setView([startingLocation.lat, startingLocation.lng], 13);
+      setZoom(15);
     }
   }, [state]);
-
+  useEffect(() => {
+    map && map.setView(position, zoom);
+  }, [position, zoom]);
   useEffect(() => {
     if (filteredRoutesData && startingPoint && pointsData.length > 0) {
       const updatedSidebarData = filteredRoutesData.map(({ day, routes, area, circuit }) => {
         const locations = Array.from(
           new Set(
-            routes.flatMap(({ start, end }) => [start, end]) // Get unique locations
+            routes.flatMap(({ start, end }) => [start, end]) 
           )
         )
           .map((locationName) => {
@@ -158,8 +162,6 @@ const RouteMapSection = ({ setRouteData }) => {
     }
   };
   const moveRoute = async (draggedDay, draggedRouteIndex, droppedDay, droppedRouteIndex) => {
-    setPosition(map.getCenter());
-    setZoom(map.getZoom());
     setLoading(true); 
     try {
       const updatedSidebarData = [...sidebarData];
@@ -238,7 +240,7 @@ const RouteMapSection = ({ setRouteData }) => {
       <div className="map-container">
         <MapContainer
           center={position}
-          zoom={zoom || 13}
+          zoom={zoom}
           style={{ height: "100%", width: "100%" }}
           ref={setMap}
         >
@@ -248,7 +250,7 @@ const RouteMapSection = ({ setRouteData }) => {
           />
 
           {filteredRoutesData.map((dayData, dayIndex) => {
-            const { day, routes, area, circuit } = dayData;
+            const { day, routes} = dayData;
             if (visibleRoutes[day] !== false) {
               return (
                 <div key={`day-${dayIndex}`}>

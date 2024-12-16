@@ -14,6 +14,7 @@ import "../styles/MapSection.css";
 import { useLocation } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useMarkers } from "../context/MarkerContext";
 
 const customIcon = L.icon({
   iconUrl: "/map_location_marker.png",
@@ -41,9 +42,9 @@ const MapClickHandler = ({ onMapClick, showForm, deleting }) => {
   return null;
 };
 
-const MapSection = ({ setStartPosition }) => {
+const MapSection = () => {
   const { state } = useLocation();
-  const [markers, setMarkers] = useState([]);
+  const { markers, setMarkers } = useMarkers();
   const [position, setPosition] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);

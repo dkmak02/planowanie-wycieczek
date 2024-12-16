@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import "./../styles/Sidebar.css";
+import "../styles/Sidebar.css";
 import MarkerForm from "./MarkerForm";
 import CalculationForm from "./CalculationForm";
 import Marker from "./Marker";
 import Loading from "../utilities/Loading";
 import { useNavigate } from "react-router-dom";
 
-const ItemType = "MARKER"; 
+const ItemType = "MARKER";
 
 const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   const [loading, setLoading] = useState(false);
@@ -16,9 +16,11 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   const [markerName, setMarkerName] = useState("");
   const [markerTime, setMarkerTime] = useState(30);
   const navigate = useNavigate();
+
   const handleCalculatePath = () => {
     setShowCalculationForm(true);
   };
+
   useEffect(() => {
     markers.forEach((marker, idx) => {
       marker.isStartingPoint = idx === 0;
@@ -26,7 +28,7 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   }, [markers]);
 
   const handleCalculate = async (maxHours, maxDays) => {
-    setLoading(true); 
+    setLoading(true);
     const requestBody = {
       markers,
       maxHours,
@@ -35,9 +37,9 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
 
     try {
       const response = await fetch(`http://127.0.0.1:4000/paths`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       });
@@ -48,12 +50,10 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
 
       const result = await response.json();
       navigate("/route-map", { state: { result: result.data } });
-
-
     } catch (error) {
-      console.error('Error sending markers to server:', error);
+      console.error("Error sending markers to server:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -61,12 +61,16 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
     setEditingIndex(index);
     setMarkerName(markers[index].name);
     setMarkerTime(markers[index].time || 30);
-    
   };
 
   const handleSaveMarker = (e) => {
     e.preventDefault();
-    if (markers.some((marker, idx) => marker.name.toLowerCase() === markerName.toLowerCase() && idx !== editingIndex)) {
+    if (
+      markers.some(
+        (marker, idx) =>
+          marker.name.toLowerCase() === markerName.toLowerCase() && idx !== editingIndex
+      )
+    ) {
       alert("Marker name must be unique. Please choose a different name.");
       return;
     }
@@ -123,35 +127,32 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   return (
     <div className="sidebar">
       <h2>Localizations</h2>
-      
-      {/* Show the loading spinner if the state is loading */}
-      {loading ? <Loading /> : (
-        <div>
+  
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="sidebar-content">
           <div className="marker-list">
             <ul>
               {markers.map((marker, index) => (
-                <MarkerWithDragDrop
-                  key={index}
-                  index={index}
-                  marker={marker}
-                />
+                <MarkerWithDragDrop key={index} index={index} marker={marker} />
               ))}
             </ul>
           </div>
-
+  
           {markers.length >= 2 && (
             <button onClick={handleCalculatePath} className="calculate-button">
               Calculate Path
             </button>
           )}
-
+  
           {showCalculationForm && (
             <CalculationForm
               onCalculate={handleCalculate}
               onClose={() => setShowCalculationForm(false)}
             />
           )}
-
+  
           {editingIndex !== null && (
             <div className="edit-marker-form">
               <MarkerForm
