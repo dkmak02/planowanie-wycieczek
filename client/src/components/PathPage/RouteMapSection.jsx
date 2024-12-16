@@ -15,7 +15,12 @@ const firstMarkerIcon = L.icon({
   iconAnchor: [19, 38],
   popupAnchor: [0, -38],
 });
-
+const customIcon = L.icon({
+  iconUrl: "/map_location_marker.png",
+  iconSize: [38, 38],
+  iconAnchor: [19, 38],
+  popupAnchor: [0, -38],
+});
 const dayColors = {
   day1: "blue",
   day2: "green",
@@ -24,7 +29,7 @@ const dayColors = {
   day5: "orange",
 };
 
-const RouteMapSection = ({ setRouteData, startPosition }) => {
+const RouteMapSection = ({ setRouteData }) => {
   const { state } = useLocation();
   const [startingPoint, setStartingPoint] = useState(null);
   const [filteredRoutesData, setFilteredRoutesData] = useState([]); // Initialize as an array
@@ -34,7 +39,8 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
   const [sidebarData, setSidebarData] = useState([]);
   const [position, setPosition] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [map, setMap] = useState(null);
+  const [zoom, setZoom] = useState(null);
 
   useEffect(() => {
     if (state && state.result) {
@@ -51,15 +57,15 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
         };
     });
       const startingLocation = result.locations.find((location) => location.isStartingPoint);
-      setStartingPoint(startingLocation.name);
+      setStartingPoint(startingLocation);
       setFilteredRoutesData(filteredDataArray);
       setAllRoutesData(result.allData);
       setPointsData(result.locations);
       setRouteData(result);
+      setPosition([startingLocation.lat, startingLocation.lng]);
     }
   }, [state]);
 
-  // Update sidebar data when routesData, startingPoint, or pointsData change
   useEffect(() => {
     if (filteredRoutesData && startingPoint && pointsData.length > 0) {
       const updatedSidebarData = filteredRoutesData.map(({ day, routes, area, circuit }) => {
@@ -79,7 +85,7 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
           })
           .filter(
             (location) =>
-              location && location.name !== startingPoint // Exclude starting point
+              location && location.name !== startingPoint.name // Exclude starting point
           );
         return { day, locations, area, circuit }; // Include area and circuit
       });
@@ -100,7 +106,7 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
     }
   }, [filteredRoutesData, startingPoint, pointsData]);
   const adjustRoutesInSameDay = (day, sidebarDataIndex) => {
-    const newRoute = [startingPoint,...sidebarData[sidebarDataIndex].locations.map((location) => location.name), startingPoint];
+    const newRoute = [startingPoint.name,...sidebarData[sidebarDataIndex].locations.map((location) => location.name), startingPoint.name];
     const pairs = newRoute.map((location, index) => [location, newRoute[index + 1]]);
     const newRoutes = [];
     pairs.forEach((pair) => {
@@ -151,54 +157,55 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
     }
   };
   const moveRoute = async (draggedDay, draggedRouteIndex, droppedDay, droppedRouteIndex) => {
-    setLoading(true); // Start loading before the operation
-    const updatedSidebarData = [...sidebarData];
-    const draggedDayIndex = updatedSidebarData.findIndex((item) => item.day === draggedDay);
-    const droppedDayIndex = updatedSidebarData.findIndex((item) => item.day === droppedDay);
-    if (draggedDayIndex === -1 || droppedDayIndex === -1) return;
-  
-    const draggedRoute = updatedSidebarData[draggedDayIndex].locations.splice(draggedRouteIndex, 1)[0];
-    updatedSidebarData[droppedDayIndex].locations.splice(droppedRouteIndex, 0, draggedRoute);
-    setSidebarData(updatedSidebarData);
-  
-    if (draggedDay === droppedDay) {
-      adjustRoutesInSameDay(draggedDay, draggedDayIndex);
-      setLoading(false); // End loading
-    } else {
-      const day1DataLocations = [pointsData.find((point) => point.name === startingPoint)];
-      const day2DataLocations = [pointsData.find((point) => point.name === startingPoint)];
-  
-      sidebarData[draggedDayIndex].locations.forEach((location) => {
-        day1DataLocations.push(pointsData.find((point) => point.name === location.name));
-      });
-      sidebarData[droppedDayIndex].locations.forEach((location) => {
-        day2DataLocations.push(pointsData.find((point) => point.name === location.name));
-      });
-  
-      const day1Request = {
-        markers: day1DataLocations,
-        maxHours: 24,
-        maxDays: 1,
-      };
-      const day2Request = {
-        markers: day2DataLocations,
-        maxHours: 24,
-        maxDays: 1,
-      };
-  
-      try {
+    setPosition(map.getCenter());
+    setZoom(map.getZoom());
+    setLoading(true); 
+    try {
+      const updatedSidebarData = [...sidebarData];
+      const draggedDayIndex = updatedSidebarData.findIndex((item) => item.day === draggedDay);
+      const droppedDayIndex = updatedSidebarData.findIndex((item) => item.day === droppedDay);
+      if (draggedDayIndex === -1 || droppedDayIndex === -1) return;
+
+      const draggedRoute = updatedSidebarData[draggedDayIndex].locations.splice(draggedRouteIndex, 1)[0];
+      updatedSidebarData[droppedDayIndex].locations.splice(droppedRouteIndex, 0, draggedRoute);
+      setSidebarData(updatedSidebarData);
+
+      if (draggedDay === droppedDay) {
+        adjustRoutesInSameDay(draggedDay, draggedDayIndex);
+      } else {
+        const day1DataLocations = [pointsData.find((point) => point.name === startingPoint.name)];
+        const day2DataLocations = [pointsData.find((point) => point.name === startingPoint.name)];
+
+        sidebarData[draggedDayIndex].locations.forEach((location) => {
+          day1DataLocations.push(pointsData.find((point) => point.name === location.name));
+        });
+        sidebarData[droppedDayIndex].locations.forEach((location) => {
+          day2DataLocations.push(pointsData.find((point) => point.name === location.name));
+        });
+
+        const day1Request = {
+          markers: day1DataLocations,
+          maxHours: 24,
+          maxDays: 1,
+        };
+        const day2Request = {
+          markers: day2DataLocations,
+          maxHours: 24,
+          maxDays: 1,
+        };
+
         const [day1, day2] = await Promise.all([
           fetchBestPathForDay(day1Request),
           fetchBestPathForDay(day2Request),
         ]);
-  
+
         adjustRoutesInDiffrentDay(draggedDay, day1);
         adjustRoutesInDiffrentDay(droppedDay, day2);
-      } catch (error) {
-        console.error('Error fetching paths:', error);
-      } finally {
-        setLoading(false); // End loading after all fetch operations
       }
+    } catch (error) {
+      console.error("Error moving route:", error);
+    } finally {
+      setLoading(false); 
     }
   };
   
@@ -216,34 +223,35 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
         return isPartOfVisibleRoute;
       })
       .map((point, index) => (
-        <Marker key={index} position={[point.lat, point.lng]} icon={firstMarkerIcon}>
+        
+        <Marker key={index} position={[point.lat, point.lng]} icon={point.isStartingPoint ? firstMarkerIcon : customIcon}>
           <Popup>{point.name}</Popup>
         </Marker>
       ));
   };
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <DndProvider backend={HTML5Backend}>
       <div className="map-container">
         <MapContainer
-          center={startPosition|| [50.0539, 19.8976]}
-          zoom={13}
+          center={position}
+          zoom={zoom || 13}
           style={{ height: "100%", width: "100%" }}
+          ref={setMap}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
 
-          {/* Render Routes */}
           {filteredRoutesData.map((dayData, dayIndex) => {
             const { day, routes, area, circuit } = dayData;
             if (visibleRoutes[day] !== false) {
               return (
                 <div key={`day-${dayIndex}`}>
-                  <h4>
-                    {day}
-                  </h4>
+                  <h4>{day}</h4>
                   {routes.map((route, routeIndex) =>
                     route.path && route.path.length > 0
                       ? route.path.map((segment, segmentIndex) => {
@@ -286,8 +294,7 @@ const RouteMapSection = ({ setRouteData, startPosition }) => {
         visibleRoutes={visibleRoutes}
       />
     </DndProvider>
-
-  ) ;
+  );
 };
 
 export default RouteMapSection;

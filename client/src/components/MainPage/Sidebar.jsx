@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const ItemType = "MARKER"; 
 
-const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit, setStartPosition }) => {
+const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   const [loading, setLoading] = useState(false);
   const [showCalculationForm, setShowCalculationForm] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -47,8 +47,6 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit, setStartPosition })
       }
 
       const result = await response.json();
-      const startingLocation = result.data.locations.find((location) => location.isStartingPoint);
-      setStartPosition([startingLocation.lat, startingLocation.lng]);
       navigate("/route-map", { state: { result: result.data } });
 
 
