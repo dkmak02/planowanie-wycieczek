@@ -8,6 +8,7 @@ import { useState } from "react";
 
 function App() {
   const [routeData, setRouteData] = useState(null);
+  const [startPosition, setStartPosition] = useState(null);
 
   return (
     <Router>
@@ -16,10 +17,10 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<CitySearch />} />
-            <Route path="/main" element={<MapSection />} />
+            <Route path="/main" element={<MapSection setStartPosition={setStartPosition} />} />
             <Route
               path="/route-map"
-              element={<RouteMapSection setRouteData={setRouteData} />}
+              element={<RouteMapSection setRouteData={setRouteData} startPosition={startPosition}/>}
             />
           </Routes>
         </div>

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const ItemType = "MARKER"; 
 
-const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
+const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit, setStartPosition }) => {
   const [loading, setLoading] = useState(false);
   const [showCalculationForm, setShowCalculationForm] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -27,14 +27,19 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
 
   const handleCalculate = async (maxHours, maxDays) => {
     setLoading(true); 
-    console.log(markers);
+    const requestBody = {
+      markers,
+      maxHours,
+      maxDays,
+    };
+
     try {
       const response = await fetch(`http://127.0.0.1:4000/paths`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(markers),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -42,8 +47,10 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
       }
 
       const result = await response.json();
-      console.log(result.data); 
-      navigate("/route-map", { state: { result: result.data,  } });
+      const startingLocation = result.data.locations.find((location) => location.isStartingPoint);
+      setStartPosition([startingLocation.lat, startingLocation.lng]);
+      navigate("/route-map", { state: { result: result.data } });
+
 
     } catch (error) {
       console.error('Error sending markers to server:', error);

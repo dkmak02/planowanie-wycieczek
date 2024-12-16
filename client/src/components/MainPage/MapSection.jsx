@@ -41,7 +41,7 @@ const MapClickHandler = ({ onMapClick, showForm, deleting }) => {
   return null;
 };
 
-const MapSection = () => {
+const MapSection = ({setStartPosition}) => {
   const { state } = useLocation();
   const [markers, setMarkers] = useState([]);
   const [position, setPosition] = useState(null);
@@ -54,29 +54,39 @@ const MapSection = () => {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          setPosition([latitude, longitude]);
-          setLoading(false);
-        },
-        (error) => {
-          console.error("Error retrieving location:", error);
-          setPosition([51.505, -0.09]);
-          setLoading(false);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-      setLoading(false);
-    }
-  }, []);
-  useEffect(() => {
     if (state && state.selectedCities) {
       setMarkers(state.selectedCities); 
     }
+
   }, [state]);
+  useEffect(() => {
+    if (markers && markers.length > 0) {
+      const startingPoint = markers[0];
+      if (startingPoint) {
+        setPosition([startingPoint.lat, startingPoint.lng]);
+        setLoading(false);
+      }
+    }
+    else{
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const { latitude, longitude } = pos.coords;
+            setPosition([latitude, longitude]);
+            setLoading(false);
+          },
+          (error) => {
+            console.error("Error retrieving location:", error);
+            setPosition([51.505, -0.09]);
+            setLoading(false);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+        setLoading(false);
+      }
+    }
+  }, [markers]);
   const handleMapClick = (lat, lng) => {
     if (!showForm && !deleting) {
       setTempCoords([lat, lng]);
@@ -137,6 +147,7 @@ const MapSection = () => {
         onDelete={handleDeleteMarker}
         onMarkerClick={moveToMarker}
         onEdit={setMarkers}
+        setStartPosition={setStartPosition}
 
       />
       <div className="map-container">

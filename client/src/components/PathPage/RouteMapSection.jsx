@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { DndProvider } from "react-dnd";
-import { useLocation } from "react-router-dom";
+import { data, useLocation } from "react-router-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import PathSidebar from "./PathSidebar";
 import "leaflet/dist/leaflet.css";
 import "./RouteMapSection.css";
+import Loading from "./../util/Loading";
 
 const firstMarkerIcon = L.icon({
   iconUrl: "/map_starter_marker.png",
@@ -23,7 +24,7 @@ const dayColors = {
   day5: "orange",
 };
 
-const RouteMapSection = ({ setRouteData }) => {
+const RouteMapSection = ({ setRouteData, startPosition }) => {
   const { state } = useLocation();
   const [startingPoint, setStartingPoint] = useState(null);
   const [filteredRoutesData, setFilteredRoutesData] = useState([]); // Initialize as an array
@@ -31,15 +32,24 @@ const RouteMapSection = ({ setRouteData }) => {
   const [pointsData, setPointsData] = useState([]);
   const [visibleRoutes, setVisibleRoutes] = useState({});
   const [sidebarData, setSidebarData] = useState([]);
+  const [position, setPosition] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     if (state && state.result) {
       const { result } = state;
-      console.log(result);
-      const filteredDataArray = Object.entries(result.filteredData).map(([day, routes]) => ({
-        day,
-        routes,
-      }));
+      console.log(result)
+      const filteredDataArray = Object.entries(result.filteredData).map(([day, dayData]) => {
+
+        return {
+            day,
+            routes: dayData[0].paths, 
+            totalHours: dayData[0].totalHours,
+            area: dayData[0].area,
+            circuit: dayData[0].circuit,
+        };
+    });
       const startingLocation = result.locations.find((location) => location.isStartingPoint);
       setStartingPoint(startingLocation.name);
       setFilteredRoutesData(filteredDataArray);
@@ -47,13 +57,12 @@ const RouteMapSection = ({ setRouteData }) => {
       setPointsData(result.locations);
       setRouteData(result);
     }
-    
   }, [state]);
 
   // Update sidebar data when routesData, startingPoint, or pointsData change
   useEffect(() => {
     if (filteredRoutesData && startingPoint && pointsData.length > 0) {
-      const updatedSidebarData = filteredRoutesData.map(({ day, routes }) => {
+      const updatedSidebarData = filteredRoutesData.map(({ day, routes, area, circuit }) => {
         const locations = Array.from(
           new Set(
             routes.flatMap(({ start, end }) => [start, end]) // Get unique locations
@@ -64,7 +73,6 @@ const RouteMapSection = ({ setRouteData }) => {
             const routeAggTime = routes
               .filter(({ end }) => end === locationName)
               .reduce((totalTime, { aggTime }) => totalTime + (aggTime || 0), 0);
-
             return location
               ? { name: location.name, time: location.time, aggTime: routeAggTime }
               : null;
@@ -73,20 +81,17 @@ const RouteMapSection = ({ setRouteData }) => {
             (location) =>
               location && location.name !== startingPoint // Exclude starting point
           );
-
-        return { day, locations };
+        return { day, locations, area, circuit }; // Include area and circuit
       });
 
       setSidebarData(updatedSidebarData);
-      //update filteredData in setRouteData
+      console.log(updatedSidebarData)
       setRouteData((prevData) => {
-        // Transform `filteredRoutesData` into the desired format
-        const transformedData = filteredRoutesData.reduce((acc, item) => {
-          acc[item.day] = item.routes; // Group routes by `day`
+        const transformedData = filteredRoutesData.reduce((acc, { day, routes, area, circuit }) => {
+          acc[day] = { paths: routes, area, circuit }; // Include area and circuit in transformed data
           return acc;
         }, {});
-      
-        // Update the routeData state
+
         return {
           ...prevData,
           filteredData: transformedData,
@@ -110,29 +115,94 @@ const RouteMapSection = ({ setRouteData }) => {
     });
     const filteredRoutesIndex = filteredRoutesData.findIndex((item) => item.day === day);
     const updatedFilteredRoutesData = [...filteredRoutesData];
+    console.log(newRoutes)
     updatedFilteredRoutesData[filteredRoutesIndex].routes = newRoutes;
     setFilteredRoutesData(updatedFilteredRoutesData);
   };
-
-  const moveRoute = (draggedDay, draggedRouteIndex, droppedDay, droppedRouteIndex) => {
+  const adjustRoutesInDiffrentDay = (day, data) => {
+    const filteredRoutesIndex = filteredRoutesData.findIndex((item) => item.day === day);
+    const updatedFilteredRoutesData = [...filteredRoutesData];
+    updatedFilteredRoutesData[filteredRoutesIndex].routes = data;
+    setFilteredRoutesData(updatedFilteredRoutesData);
+    console.log(data);
+  };
+  const fetchBestPathForDay = async (requestBody) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:4000/paths/bestCombination`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      result.data.filteredData.day1[0].paths.forEach((path) => {
+        path.visitTime = (pointsData.find((point) => point.name === path.end).time || 0) / 60;
+      });
+      return result.data.filteredData.day1[0].paths;
+    } catch (error) {
+      console.error('Error sending markers to server:', error);
+      return []; 
+    }
+  };
+  const moveRoute = async (draggedDay, draggedRouteIndex, droppedDay, droppedRouteIndex) => {
+    setLoading(true); // Start loading before the operation
     const updatedSidebarData = [...sidebarData];
     const draggedDayIndex = updatedSidebarData.findIndex((item) => item.day === draggedDay);
     const droppedDayIndex = updatedSidebarData.findIndex((item) => item.day === droppedDay);
-    if (draggedDayIndex === -1 || droppedDayIndex === -1) return; 
+    if (draggedDayIndex === -1 || droppedDayIndex === -1) return;
+  
     const draggedRoute = updatedSidebarData[draggedDayIndex].locations.splice(draggedRouteIndex, 1)[0];
     updatedSidebarData[droppedDayIndex].locations.splice(droppedRouteIndex, 0, draggedRoute);
     setSidebarData(updatedSidebarData);
-    if(draggedDay === droppedDay){
-      adjustRoutesInSameDay(draggedDay,draggedDayIndex);
-    }
-    else{
+  
+    if (draggedDay === droppedDay) {
       adjustRoutesInSameDay(draggedDay, draggedDayIndex);
-      adjustRoutesInSameDay(droppedDay, droppedDayIndex);
+      setLoading(false); // End loading
+    } else {
+      const day1DataLocations = [pointsData.find((point) => point.name === startingPoint)];
+      const day2DataLocations = [pointsData.find((point) => point.name === startingPoint)];
+  
+      sidebarData[draggedDayIndex].locations.forEach((location) => {
+        day1DataLocations.push(pointsData.find((point) => point.name === location.name));
+      });
+      sidebarData[droppedDayIndex].locations.forEach((location) => {
+        day2DataLocations.push(pointsData.find((point) => point.name === location.name));
+      });
+  
+      const day1Request = {
+        markers: day1DataLocations,
+        maxHours: 24,
+        maxDays: 1,
+      };
+      const day2Request = {
+        markers: day2DataLocations,
+        maxHours: 24,
+        maxDays: 1,
+      };
+  
+      try {
+        const [day1, day2] = await Promise.all([
+          fetchBestPathForDay(day1Request),
+          fetchBestPathForDay(day2Request),
+        ]);
+  
+        adjustRoutesInDiffrentDay(draggedDay, day1);
+        adjustRoutesInDiffrentDay(droppedDay, day2);
+      } catch (error) {
+        console.error('Error fetching paths:', error);
+      } finally {
+        setLoading(false); // End loading after all fetch operations
+      }
     }
   };
   
 
-  // Render points for visible routes on the map
   const renderMarkers = () => {
     return pointsData
       .filter((point) => {
@@ -140,8 +210,7 @@ const RouteMapSection = ({ setRouteData }) => {
           (dayData) =>
             visibleRoutes[dayData.day] !== false &&
             dayData.routes.some(
-              (route) =>
-                route.start === point.name || route.end === point.name
+              (route) => route.start === point.name || route.end === point.name
             )
         );
         return isPartOfVisibleRoute;
@@ -157,7 +226,7 @@ const RouteMapSection = ({ setRouteData }) => {
     <DndProvider backend={HTML5Backend}>
       <div className="map-container">
         <MapContainer
-          center={[50.0539, 19.8976]} // Center for the map
+          center={startPosition|| [50.0539, 19.8976]}
           zoom={13}
           style={{ height: "100%", width: "100%" }}
         >
@@ -168,11 +237,13 @@ const RouteMapSection = ({ setRouteData }) => {
 
           {/* Render Routes */}
           {filteredRoutesData.map((dayData, dayIndex) => {
-            const { day, routes } = dayData;
+            const { day, routes, area, circuit } = dayData;
             if (visibleRoutes[day] !== false) {
               return (
                 <div key={`day-${dayIndex}`}>
-                  <h4>{day}</h4>
+                  <h4>
+                    {day}
+                  </h4>
                   {routes.map((route, routeIndex) =>
                     route.path && route.path.length > 0
                       ? route.path.map((segment, segmentIndex) => {
@@ -204,12 +275,10 @@ const RouteMapSection = ({ setRouteData }) => {
             return null;
           })}
 
-          {/* Render Markers */}
           {renderMarkers()}
         </MapContainer>
       </div>
 
-      {/* Sidebar for route and day visibility */}
       <PathSidebar
         routesData={sidebarData}
         moveRoute={moveRoute}
@@ -217,7 +286,8 @@ const RouteMapSection = ({ setRouteData }) => {
         visibleRoutes={visibleRoutes}
       />
     </DndProvider>
-  );
+
+  ) ;
 };
 
 export default RouteMapSection;
