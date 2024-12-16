@@ -1,5 +1,5 @@
 import React from "react";
-import './RouteInfo.css'; // Import the new styles
+import './../styles/RouteInfo.css'; // Import the new styles
 
 const RouteInfo = ({ location }) => {
   // Utility function to format time in minutes to hours and minutes

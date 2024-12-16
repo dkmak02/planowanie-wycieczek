@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import UploadJson from "./UploadJson";
-import DownloadJson from "./../PathPage/DownloadJson";
-import "./Navbar.css";
+import DownloadJson from "./DownloadJson";
+import "./../styles/Navbar.css";
 
 const Navbar = ({ routeData }) => { // Accept routeData as a prop
   const [showUploadForm, setShowUploadForm] = useState(false);

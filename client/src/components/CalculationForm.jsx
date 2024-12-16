@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CalculationForm.css";
+import "./../styles/CalculationForm.css";
 
 const CalculationForm = ({ onCalculate, onClose }) => {
   const [maxHours, setMaxHours] = useState("");

@@ -1,5 +1,5 @@
 import React from "react";
-import "./UploadJson.css";
+import "./../styles/UploadJson.css";
 import { useNavigate } from "react-router-dom";
 
 const UploadJson = ({ onClose }) => {
@@ -12,11 +12,11 @@ const UploadJson = ({ onClose }) => {
   };
 
   const validateJsonStructure = (jsonData) => {
-    // Check top-level properties
+
     if (!jsonData || typeof jsonData !== "object") return false;
     if (!Array.isArray(jsonData.locations) || typeof jsonData.filteredData !== "object" || typeof jsonData.allData !== "object") return false;
 
-    // Validate `locations` array
+
     const validLocations = jsonData.locations.every(
       (location) =>
         location &&
@@ -28,7 +28,7 @@ const UploadJson = ({ onClose }) => {
     );
     if (!validLocations) return false;
 
-    // Validate `filteredData` object
+
     const validFilteredData = Object.values(jsonData.filteredData).every((dayRoutes) =>
       Array.isArray(dayRoutes) &&
       dayRoutes.every(

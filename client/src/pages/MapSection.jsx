@@ -8,9 +8,9 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import Sidebar from "./Sidebar";
-import MarkerForm from "./MarkerForm";
-import "./MapSection.css";
+import Sidebar from "../components/Sidebar";
+import MarkerForm from "../components/MarkerForm";
+import "./../styles/MapSection.css";
 import { useLocation } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -41,7 +41,7 @@ const MapClickHandler = ({ onMapClick, showForm, deleting }) => {
   return null;
 };
 
-const MapSection = ({setStartPosition}) => {
+const MapSection = () => {
   const { state } = useLocation();
   const [markers, setMarkers] = useState([]);
   const [position, setPosition] = useState(null);
@@ -147,7 +147,6 @@ const MapSection = ({setStartPosition}) => {
         onDelete={handleDeleteMarker}
         onMarkerClick={moveToMarker}
         onEdit={setMarkers}
-        setStartPosition={setStartPosition}
 
       />
       <div className="map-container">

@@ -4,10 +4,10 @@ import L from "leaflet";
 import { DndProvider } from "react-dnd";
 import { data, useLocation } from "react-router-dom";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import PathSidebar from "./PathSidebar";
+import PathSidebar from "../components/PathSidebar";
 import "leaflet/dist/leaflet.css";
-import "./RouteMapSection.css";
-import Loading from "./../util/Loading";
+import "./../styles/RouteMapSection.css";
+import Loading from "../utilities/Loading";
 
 const firstMarkerIcon = L.icon({
   iconUrl: "/map_starter_marker.png",
@@ -63,6 +63,7 @@ const RouteMapSection = ({ setRouteData }) => {
       setPointsData(result.locations);
       setRouteData(result);
       setPosition([startingLocation.lat, startingLocation.lng]);
+      map.setView([startingLocation.lat, startingLocation.lng], 13);
     }
   }, [state]);
 

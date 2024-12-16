@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import "./Sidebar.css";
+import "./../styles/Sidebar.css";
 import MarkerForm from "./MarkerForm";
 import CalculationForm from "./CalculationForm";
 import Marker from "./Marker";
-import Loading from "../util/Loading";
+import Loading from "../utilities/Loading";
 import { useNavigate } from "react-router-dom";
 
 const ItemType = "MARKER"; 

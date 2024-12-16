@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import './PathSidebar.css';  
+import './../styles/PathSidebar.css';  
 import RouteInfo from "./RouteInfo";
 
 const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes }) => {

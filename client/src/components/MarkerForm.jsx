@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import "./MarkerForm.css";
+import "./../styles/MarkerForm.css";
 
 const MarkerForm = ({
   markerName,

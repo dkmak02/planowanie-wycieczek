@@ -1,14 +1,13 @@
 import "./App.css";
-import MapSection from "./components/MainPage/MapSection";
-import CitySearch from "./components/StartPage/CitySearch";
-import Navbar from "./components/MainPage/Navbar";
-import RouteMapSection from "./components/PathPage/RouteMapSection";
+import MapSection from "./pages/MapSection";
+import CitySearch from "./pages/CitySearch";
+import Navbar from "./components/Navbar";
+import RouteMapSection from "./pages/RouteMapSection";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
 function App() {
   const [routeData, setRouteData] = useState(null);
-  const [startPosition, setStartPosition] = useState(null);
 
   return (
     <Router>
@@ -17,10 +16,10 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<CitySearch />} />
-            <Route path="/main" element={<MapSection setStartPosition={setStartPosition} />} />
+            <Route path="/main" element={<MapSection />} />
             <Route
               path="/route-map"
-              element={<RouteMapSection setRouteData={setRouteData} startPosition={startPosition}/>}
+              element={<RouteMapSection setRouteData={setRouteData}/>}
             />
           </Routes>
         </div>

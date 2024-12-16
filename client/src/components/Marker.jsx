@@ -1,5 +1,5 @@
 import React from "react";
-import "./Marker.css";
+import "./../styles/Marker.css";
 
 const Marker = ({ index, name, onDelete, isActive, onClick, onEdit }) => {
   return (

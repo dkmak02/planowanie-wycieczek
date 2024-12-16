@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./CitySearch.css";
+import "./../styles/CitySearch.css";
 
 const CitySearch = ({ onAddCity }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,7 +82,6 @@ const CitySearch = ({ onAddCity }) => {
       prevCities.filter((_, cityIndex) => cityIndex !== index)
     );
 
-    // Add the deleted city back to searchResults
     const restoredCity = allSearchResults.find(
       (result) => result.display_name.split(",")[0] === cityToDelete.name
     );
