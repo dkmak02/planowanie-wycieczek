@@ -1,20 +1,20 @@
 /* Loading.css */
 .loading-overlay {
-    position: fixed;  /* Fixed position to cover the entire page */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent black background */
+    background-color: rgba(0, 0, 0, 0.5);  
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;  /* Ensure the loading overlay is above all other content */
+    z-index: 9999;  
   }
   
   .loading-container {
     text-align: center;
-    color: white; /* Text color for contrast */
+    color: white; 
   }
   
   .loading-spinner {

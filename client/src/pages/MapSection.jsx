@@ -135,7 +135,7 @@ const MapSection = () => {
           onEdit={setMarkers}
         />
         <div className="map-container">
-          <MapContainer center={position} zoom={13} style={{ height: "100vh", width: "100%" }} ref={setMap}>
+          <MapContainer center={position} zoom={13}  ref={setMap}>
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <MapClickHandler onMapClick={handleMapClick} showForm={showForm} />
             {markers.map((marker, index) => (

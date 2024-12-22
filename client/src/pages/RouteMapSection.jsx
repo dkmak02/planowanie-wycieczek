@@ -11,7 +11,7 @@ import Loading from "../utilities/Loading";
 import { useMarkers } from "../context/MarkerContext";
 import MarkerForm from "../components/MarkerForm";
 import lz from "lz-string";
-
+import { DivIcon } from 'leaflet';
 const firstMarkerIcon = L.icon({
   iconUrl: "/map_starter_marker.png",
   iconSize: [38, 38],
@@ -344,6 +344,17 @@ const RouteMapSection = () => {
       setShowForm(true);
     }
   };
+  const createCustomIconWithText = (text) => {
+    return new DivIcon({
+      className: "custom-div-icon",
+      html: `<div class="icon-wrapper">
+               <div class="icon-text">${text}</div>
+             </div>`,
+      iconSize: [30, 42], 
+      iconAnchor: [15, 42], 
+    });
+  };
+  
   const renderMarkers = () => {
     return markers
       .filter((point) => {
@@ -358,9 +369,17 @@ const RouteMapSection = () => {
       })
       .map((point, index) => (
         
-        <Marker key={index} position={[point.lat, point.lng]} icon={point.isStartingPoint ? firstMarkerIcon : customIcon}>
-          <Popup>{point.name}</Popup>
-        </Marker>
+        <Marker
+  key={index}
+  position={[point.lat, point.lng]}
+  icon={
+    point.isStartingPoint
+      ? firstMarkerIcon
+      : createCustomIconWithText(point.name) 
+  }
+>
+  <Popup>{point.name}</Popup>
+</Marker>
       ));
   };
 

@@ -25,44 +25,44 @@
   display: flex; 
   justify-content: space-between; 
   align-items: center; 
-  width: 100%; /* Full width for proper alignment */
+  width: 100%; 
 }
 
 .marker-text {
-  flex: 1; /* Allow text to take available space */
-  word-wrap: break-word; /* Allow long words to break to the next line */
-  margin-right: 0.5rem; /* Space between text and button */
-  overflow-wrap: break-word; /* Allows breaking of words to prevent overflow */
-  max-width: 75%; /* Limit width to encourage wrapping */
+  flex: 1; 
+  word-wrap: break-word; 
+  margin-right: 0.5rem;
+  overflow-wrap: break-word; 
+  max-width: 75%; 
 }
 
 .marker-actions {
-  display: flex; /* Flexbox for actions */
-  justify-content: flex-end; /* Align actions to the right */
+  display: flex;
+  justify-content: flex-end; 
 }
 
 .delete-button {
-  background-color: #ff4d4d; /* Red background for delete button */
-  color: white; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  padding: 0.5rem 1rem; /* Padding for the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+  background-color: #ff4d4d;
+  color: white; 
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem; 
+  cursor: pointer;
+  transition: background-color 0.3s; 
 }
 
 .delete-button:hover {
-  background-color: #e60000; /* Darker red on hover */
+  background-color: #e60000; 
 }
 .edit-button {
-  background-color: #4CAF50; /* Green background for edit button */
-  color: white; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 4px; /* Rounded corners */
-  padding: 0.5rem 1rem; /* Padding for the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+  background-color: #4CAF50;
+  color: white; 
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem; 
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 .edit-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: #45a049; 
 }

@@ -64,7 +64,7 @@
   background-color: #45a049;
 }
 
-/* Add a scrollbar style for better aesthetics */
+
 .city-search ul::-webkit-scrollbar {
   width: 6px;
 }
