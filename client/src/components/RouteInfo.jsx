@@ -1,8 +1,8 @@
 import React from "react";
 import './../styles/RouteInfo.css'; // Import the new styles
 
-const RouteInfo = ({ location }) => {
-  // Utility function to format time in minutes to hours and minutes
+const RouteInfo = ({ location, onDelete, onEdit }) => {
+
   const formatTime = (timeInMinutes) => {
     if (!timeInMinutes || isNaN(timeInMinutes)) return <span data-available="false">Not Available</span>;
 
@@ -14,17 +14,20 @@ const RouteInfo = ({ location }) => {
       : `${minutes}m`;
   };
 
-  // Convert aggTime from hours to minutes for formatting
   const formattedTravelTime = location.aggTime ? formatTime(location.aggTime * 60) : <span data-available="false">Not Available</span>;
 
   return (
-    <div>
+    <div className="route-info-container">
       <div className="route-name">
         <strong>{location.name || "Route Name"}</strong>
       </div>
       <div className="route-start">
         <span>Visit time: {formatTime(location.time)}</span>
         <span>Travel Time: {formattedTravelTime}</span>
+      </div>
+      <div className="route-actions">
+        <button onClick={() => onEdit(location)} className="edit-button">Edit</button>
+        <button onClick={() => onDelete(location)} className="delete-button">Delete</button>
       </div>
     </div>
   );

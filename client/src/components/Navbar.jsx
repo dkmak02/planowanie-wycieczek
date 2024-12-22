@@ -4,7 +4,7 @@ import UploadJson from "./UploadJson";
 import DownloadJson from "./DownloadJson";
 import "./../styles/Navbar.css";
 
-const Navbar = ({ routeData }) => { // Accept routeData as a prop
+const Navbar = () => { // Accept routeData as a prop
   const [showUploadForm, setShowUploadForm] = useState(false);
   const location = useLocation();
 
@@ -26,8 +26,8 @@ const Navbar = ({ routeData }) => { // Accept routeData as a prop
               Upload JSON
             </button>
           )}
-          {location.pathname === "/route-map" && routeData && (
-            <DownloadJson data={routeData} /> 
+          {location.pathname === "/route-map"  && (
+            <DownloadJson /> 
           )}
         </div>
       </nav>

@@ -1,6 +1,5 @@
 import "./App.css";
 import MapSection from "./pages/MapSection";
-import CitySearch from "./pages/CitySearch";
 import Navbar from "./components/Navbar";
 import RouteMapSection from "./pages/RouteMapSection";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -13,19 +12,20 @@ function App() {
   return (
     <Router>
       <div className="App">
+      <MarkerProvider>
         <Navbar routeData={routeData} /> {/* Pass routeData to Navbar */}
         <div className="content">
-          <MarkerProvider>
+          
           <Routes>
-            <Route path="/" element={<CitySearch />} />
-            <Route path="/main" element={<MapSection />} />
+            <Route path="/" element={<MapSection />} />
             <Route
               path="/route-map"
               element={<RouteMapSection setRouteData={setRouteData}/>}
             />
           </Routes>
-          </MarkerProvider>
+          
         </div>
+        </MarkerProvider>
       </div>
     </Router>
   );

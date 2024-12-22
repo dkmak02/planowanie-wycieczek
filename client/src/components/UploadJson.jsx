@@ -1,10 +1,11 @@
 import React from "react";
 import "./../styles/UploadJson.css";
 import { useNavigate } from "react-router-dom";
-
+import { useMarkers } from "../context/MarkerContext";
+import LZString from "lz-string";
 const UploadJson = ({ onClose }) => {
   const navigate = useNavigate();
-
+  const { setMarkers, setFilteredData, setAllData} = useMarkers();
   const handleOutsideClick = (event) => {
     if (event.target.className.includes("upload-modal")) {
       onClose();
@@ -12,89 +13,128 @@ const UploadJson = ({ onClose }) => {
   };
 
   const validateJsonStructure = (jsonData) => {
-
     if (!jsonData || typeof jsonData !== "object") return false;
-    if (!Array.isArray(jsonData.locations) || typeof jsonData.filteredData !== "object" || typeof jsonData.allData !== "object") return false;
+  
+    // Validate `locations` array
+    if (
+      !Array.isArray(jsonData.locations) ||
+      !jsonData.locations.every(
+        (location) =>
+          location &&
+          typeof location.name === "string" &&
+          typeof location.lat === "number" &&
+          typeof location.lng === "number" &&
+          typeof location.time === "number" &&
+          typeof location.isStartingPoint === "boolean"
+      )
+    ) {
+      
+      return false;
+    }
+    setMarkers(jsonData.locations);
+  
+    // Validate `filteredData`
+    if (
+      !jsonData.filteredData ||
+      typeof jsonData.filteredData !== "object" ||
+      !Object.values(jsonData.filteredData).every(
+        (day) =>
+          Array.isArray(day) &&
+          day.every(
+            (item) =>
+              item &&
+              Array.isArray(item.paths) &&
+              item.paths.every(
+                (path) =>
+                  path &&
+                  typeof path.start === "string" &&
+                  typeof path.end === "string" &&
+                  Array.isArray(path.path) &&
+                  path.path.every(
+                    (segment) =>
+                      segment &&
+                      typeof segment.agg_cost === "number" &&
+                      typeof segment.geoJSON === "object" &&
+                      segment.geoJSON.type === "LineString" &&
+                      Array.isArray(segment.geoJSON.coordinates) &&
+                      segment.geoJSON.coordinates.every(
+                        (coord) =>
+                          Array.isArray(coord) &&
+                          coord.length === 2 &&
+                          typeof coord[0] === "number" &&
+                          typeof coord[1] === "number"
+                      )
+                  )
+              )
+          )
+      )
+    ) {
+      return false;
+    }
+    const filteredDataArray = Object.entries(jsonData.filteredData).map(([day, details]) => ({
+      day,
+      routes: details[0].paths,
+      totalHours: details[0].totalHours,
+      area: details[0].area,
+      circuit: details[0].circuit,
+    }));
+    setFilteredData(filteredDataArray);
 
-
-    const validLocations = jsonData.locations.every(
-      (location) =>
-        location &&
-        typeof location.name === "string" &&
-        typeof location.lat === "number" &&
-        typeof location.lng === "number" &&
-        typeof location.time === "number" &&
-        typeof location.isStartingPoint === "boolean"
-    );
-    if (!validLocations) return false;
-
-
-    const validFilteredData = Object.values(jsonData.filteredData).every((dayRoutes) =>
-      Array.isArray(dayRoutes) &&
-      dayRoutes.every(
+    if (
+      !Array.isArray(jsonData.allData) ||
+      !jsonData.allData.every(
         (route) =>
           route &&
           typeof route.start === "string" &&
           typeof route.end === "string" &&
           Array.isArray(route.path) &&
           route.path.every(
-            (pathSegment) =>
-              pathSegment &&
-              typeof pathSegment.agg_cost === "number" &&
-              typeof pathSegment.geoJSON === "object" &&
-              pathSegment.geoJSON.type === "LineString" &&
-              Array.isArray(pathSegment.geoJSON.coordinates) &&
-              pathSegment.geoJSON.coordinates.every(
-                (coord) => Array.isArray(coord) && coord.length === 2 && typeof coord[0] === "number" && typeof coord[1] === "number"
+            (segment) =>
+              segment &&
+              typeof segment.agg_cost === "number" &&
+              typeof segment.geoJSON === "object" &&
+              segment.geoJSON.type === "LineString" &&
+              Array.isArray(segment.geoJSON.coordinates) &&
+              segment.geoJSON.coordinates.every(
+                (coord) =>
+                  Array.isArray(coord) &&
+                  coord.length === 2 &&
+                  typeof coord[0] === "number" &&
+                  typeof coord[1] === "number"
               )
           )
       )
-    );
-    if (!validFilteredData) return false;
-
-    // Validate `allData` object
-    const validAllData = Object.values(jsonData.allData).every(
-      (route) =>
-        route &&
-        typeof route.start === "string" &&
-        typeof route.end === "string" &&
-        Array.isArray(route.path) &&
-        route.path.every(
-          (pathSegment) =>
-            pathSegment &&
-            typeof pathSegment.agg_cost === "number" &&
-            typeof pathSegment.geoJSON === "object" &&
-            pathSegment.geoJSON.type === "LineString" &&
-            Array.isArray(pathSegment.geoJSON.coordinates) &&
-            pathSegment.geoJSON.coordinates.every(
-              (coord) => Array.isArray(coord) && coord.length === 2 && typeof coord[0] === "number" && typeof coord[1] === "number"
-            )
-        )
-    );
-    if (!validAllData) return false;
-
-    return true;
+    ) {
+      return false;
+    }
+    setAllData(jsonData.allData);
+    return true; // Passed all validations
   };
+  
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const jsonData = JSON.parse(e.target.result);
-          if (!validateJsonStructure(jsonData)) {
-            throw new Error("Invalid JSON structure!");
-          }
-          navigate("/route-map", { state: { result: jsonData } });
-        } catch (err) {
-          alert(err.message || "Invalid JSON file!");
-        }
-      };
-      reader.readAsText(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const decompressedData = LZString.decompressFromUTF16(e.target.result);
+                if (!decompressedData) {
+                    throw new Error("Failed to decompress the file!");
+                }
+                const jsonData = JSON.parse(decompressedData);
+                if (!validateJsonStructure(jsonData)) {
+                    throw new Error("Invalid JSON structure!");
+                }
+                navigate("/route-map");
+            } catch (err) {
+                alert(err.message || "Invalid or corrupted JSON file!");
+            }
+        };
+        reader.readAsText(file);
     }
     onClose();
-  };
+};
 
   return (
     <div className="upload-modal" onMouseDown={handleOutsideClick}>

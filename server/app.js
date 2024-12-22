@@ -9,8 +9,9 @@ const cors = require("cors");
 const pathsRouter = require('./routes/paths');
 
 var app = express();
-
-const swaggerOptions = {
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+swaggerOptions = {
   definition: {
       openapi: '3.0.0',
       info: {
@@ -30,11 +31,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json({ limit: '50mb' })); 
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/paths', pathsRouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-// catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   next(createError(404));
 });

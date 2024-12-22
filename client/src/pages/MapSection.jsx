@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useMarkers } from "../context/MarkerContext";
+import CitySearch from "../components/CitySearch";
 
 const customIcon = L.icon({
   iconUrl: "/map_location_marker.png",
@@ -30,10 +31,10 @@ const firstMarkerIcon = L.icon({
   popupAnchor: [0, -38],
 });
 
-const MapClickHandler = ({ onMapClick, showForm, deleting }) => {
+const MapClickHandler = ({ onMapClick, showForm }) => {
   useMapEvents({
     click: (event) => {
-      if (!showForm && !deleting) {
+      if (!showForm) {
         const { lat, lng } = event.latlng;
         onMapClick(lat, lng);
       }
@@ -50,8 +51,7 @@ const MapSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [tempCoords, setTempCoords] = useState(null);
   const [markerName, setMarkerName] = useState("");
-  const [markerTime, setMarkerTime] = useState(30);
-  const [deleting, setDeleting] = useState(false);
+  const [markerTime, setMarkerTime] = useState(15);
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const MapSection = () => {
   }, [markers]);
 
   const handleMapClick = (lat, lng) => {
-    if (!showForm && !deleting) {
+    if (!showForm) {
       setTempCoords([lat, lng]);
       setShowForm(true);
     }
@@ -102,13 +102,22 @@ const MapSection = () => {
     ]);
     setShowForm(false);
     setMarkerName("");
-    setMarkerTime(30);
+    setMarkerTime(15);
   };
 
   const handleCancelForm = () => {
     setShowForm(false);
     setMarkerName("");
-    setMarkerTime(30);
+    setMarkerTime(15);
+  };
+
+  const handleAddMarkerFromSearch = (marker) => {
+    if (markers.some((m) => m.name === marker.name)) {
+      alert("Marker already added.");
+      return;
+    }
+
+    setMarkers((prev) => [...prev, marker]);
   };
 
   if (loading) {
@@ -117,6 +126,7 @@ const MapSection = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+       <CitySearch onAddCity={handleAddMarkerFromSearch} />
       <div className="content">
         <Sidebar
           markers={markers}
@@ -127,7 +137,7 @@ const MapSection = () => {
         <div className="map-container">
           <MapContainer center={position} zoom={13} style={{ height: "100vh", width: "100%" }} ref={setMap}>
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <MapClickHandler onMapClick={handleMapClick} showForm={showForm} deleting={deleting} />
+            <MapClickHandler onMapClick={handleMapClick} showForm={showForm} />
             {markers.map((marker, index) => (
               <LeafletMarker
                 key={index}

@@ -2,10 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import './../styles/PathSidebar.css';  
 import RouteInfo from "./RouteInfo";
+import { useMarkers } from "../context/MarkerContext";
+import MarkerForm from "./MarkerForm";
 
-const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes }) => {
+const PathSidebar = ({ routesData, moveRoute, setRoutesData, setVisibleRoutes, visibleRoutes, fixRoutesAfterDelete }) => {
   const [selectedDays, setSelectedDays] = useState({});
   const [clickedDays, setClickedDays] = useState({});
+  const { markers, setMarkers, setAllData, allData } = useMarkers();
+  const [isEditing, setIsEditing] = useState(false);
+  const [markerName, setMarkerName] = useState("");
+  const [markerTime, setMarkerTime] = useState(0);
+  const [editingIndex, setEditingIndex] = useState(null);
 
   useEffect(() => {
     const defaultSelectedDays = {};
@@ -39,7 +46,23 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes })
     }));
   };
 
-  // Function to calculate total time for a day
+  const handleDelete = (location) => {
+    const dayIndex = routesData.findIndex((route) => 
+    route.locations.some((loc) => loc.name === location.name));
+    const updatedMarkers = markers.filter((marker) => marker.name !== location.name);
+    const updadedAllData = allData.filter((marker) => marker.start !== location.name && marker.end !== location.name);
+    setAllData(updadedAllData);
+    setMarkers(updatedMarkers);
+    fixRoutesAfterDelete(dayIndex, location);
+  };
+
+  const handleEdit = (location) => {
+    setEditingIndex(markers.findIndex((marker) => marker.name === location.name));
+    setMarkerName(location.name);
+    setMarkerTime(location.time || 0);
+    setIsEditing(true);
+  };
+
   const calculateTotalTime = (locations) => {
     return locations.reduce((total, location) => {
       const locationTime = location.time || 0; // `time` in minutes
@@ -48,18 +71,50 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes })
     }, 0);
   };
 
-  // Function to format total time in hours and minutes
   const formatTime = (totalMinutes) => {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    if (hours > 0) {
-      return `${hours}h ${minutes > 0 ? `${minutes.toFixed(0)}m` : ""}`.trim();
-    } else {
-      return `${minutes}m`;
-    }
+    return hours > 0
+      ? `${hours}h ${minutes > 0 ? `${minutes.toFixed(0)}m` : ""}`.trim()
+      : `${minutes.toFixed(0)}m`;
   };
-
+  const handleFormCancel = () => {
+    setIsEditing(false);
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (
+      markers.some(
+        (marker, idx) =>
+          marker.name.toLowerCase() === markerName.toLowerCase()  && idx !== editingIndex
+      )
+    ) {
+      alert("Marker name must be unique. Please choose a different name.");
+      return;
+    }
+    const updatedMarkers = [...markers];
+    updatedMarkers[editingIndex] = {
+      ...updatedMarkers[editingIndex],
+      name: markerName,
+      time: markerTime,
+    };
+    setMarkers(updatedMarkers);
+    setIsEditing(false);
+  };
   return (
+    <div>
+    {isEditing && (
+  <MarkerForm
+    markerName={markerName}
+    markerTime={markerTime}
+    setMarkerName={setMarkerName}
+    setMarkerTime={setMarkerTime}
+    onSubmit={handleFormSubmit}
+    onCancel={handleFormCancel}
+    disableNameChange={true} 
+  />
+)}
+
     <div className="sidebar">
       <h3>Days</h3>
       {routesData.map(({ day, locations }, dayIndex) => {
@@ -87,6 +142,8 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes })
                   location={location}
                   locationIndex={locationIndex}
                   moveRoute={moveRoute}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
                 />
               ))}
             </div>
@@ -94,10 +151,11 @@ const PathSidebar = ({ routesData, moveRoute, setVisibleRoutes, visibleRoutes })
         );
       })}
     </div>
+    </div>
   );
 };
 
-const DraggableRoute = ({ day, location, locationIndex, moveRoute }) => {
+const DraggableRoute = ({ day, location, locationIndex, moveRoute, onDelete, onEdit }) => {
   const [{ isDragging }, drag] = useDrag({
     type: "route",
     item: { day, locationIndex },
@@ -121,7 +179,11 @@ const DraggableRoute = ({ day, location, locationIndex, moveRoute }) => {
       ref={(node) => drag(drop(node))}
       className={`route-item ${isDragging ? "dragging" : ""} ${isOver ? "over" : ""}`}
     >
-      <RouteInfo location={location} />
+      <RouteInfo 
+        location={location} 
+        onDelete={() => onDelete(location)} 
+        onEdit={() => onEdit(location)} 
+      />
     </div>
   );
 };

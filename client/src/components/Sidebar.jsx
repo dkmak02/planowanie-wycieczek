@@ -6,7 +6,8 @@ import CalculationForm from "./CalculationForm";
 import Marker from "./Marker";
 import Loading from "../utilities/Loading";
 import { useNavigate } from "react-router-dom";
-
+import { useMarkers } from "../context/MarkerContext";
+import lz from "lz-string";
 const ItemType = "MARKER";
 
 const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
@@ -15,6 +16,7 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [markerName, setMarkerName] = useState("");
   const [markerTime, setMarkerTime] = useState(30);
+  const {setFilteredData, setAllData} = useMarkers();
   const navigate = useNavigate();
 
   const handleCalculatePath = () => {
@@ -26,7 +28,16 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
       marker.isStartingPoint = idx === 0;
     });
   }, [markers]);
-
+  const getPathsFromAllData = (allData, paths) => {
+    const pathsArray = [];
+    paths.forEach((path) => {
+      const pathDetails = allData.find(
+        (data) => data.start === path[0] && data.end === path[1]
+      );
+      pathsArray.push(pathDetails);
+    });
+    return pathsArray;
+  };
   const handleCalculate = async (maxHours, maxDays) => {
     setLoading(true);
     const requestBody = {
@@ -48,8 +59,19 @@ const Sidebar = ({ markers, onDelete, onMarkerClick, onEdit }) => {
         throw new Error(`Failed to fetch: ${response.statusText}`);
       }
 
-      const result = await response.json();
-      navigate("/route-map", { state: { result: result.data } });
+      let result = await response.json();
+      result = JSON.parse(lz.decompressFromUTF16(result.data));
+      console.log(result);
+      const transformData = (data) => {
+        return Object.entries(data).map(([day, routes]) => ({
+            day,
+            routes: getPathsFromAllData(result.allData, routes),
+        }));
+    };
+    const transformedData = transformData(result.filteredData);
+      setFilteredData(transformedData);
+      setAllData(result.allData);
+      navigate("/route-map");
     } catch (error) {
       console.error("Error sending markers to server:", error);
     } finally {

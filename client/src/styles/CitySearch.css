@@ -1,122 +1,79 @@
-.container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
+/* Style the container to position it at the top center of the map */
+.city-search {
+  position: absolute; /* Position it over the map */
+  top: 20px; /* Space from the top */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust to true center */
+  z-index: 1000; /* Ensure it appears above the map */
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 300px; /* Fixed width for the search bar */
 }
 
-.heading {
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.inputContainer {
-  margin-bottom: 20px;
-}
-
-.input {
+/* Style the input field */
+.city-search input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 14px;
 }
 
-.resultsContainer {
-  margin-bottom: 20px;
-}
-
-.resultsList {
+/* Style the results list */
+.city-search ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 10px 0 0 0; /* Space between input and results */
+  max-height: 200px; /* Limit the height of the results list */
+  overflow-y: auto; /* Enable scrolling for long results */
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.resultItem {
+/* Style each result item */
+.city-search li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Light separator */
+  font-size: 14px;
+  color: #333;
+  backdrop-filter: blur(5px); /* Optional blur effect for background */
 }
 
-.addButton {
+.city-search li:last-child {
+  border-bottom: none; /* Remove border for last item */
+}
+
+/* Style the add button */
+.city-search button {
   padding: 5px 10px;
   background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 12px;
 }
 
-.addButton:hover {
+.city-search button:hover {
   background-color: #45a049;
 }
 
-/* Scrollable container styles for results */
-.resultsContainer {
-  max-height: 200px; /* Limit the height */
-  overflow-y: auto;  /* Enable vertical scrolling */
-  padding-right: 5px; /* Add space for scrollbar */
+/* Add a scrollbar style for better aesthetics */
+.city-search ul::-webkit-scrollbar {
+  width: 6px;
 }
 
-.selectedCitiesContainer {
-  margin-bottom: 20px;
+.city-search ul::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
-/* Style the header of the selected cities list to stay fixed */
-.selectedCitiesHeader {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.selectedCitiesList {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  max-height: 200px; /* Limit the height */
-  overflow-y: auto;  /* Enable vertical scrolling */
-  padding-right: 5px; /* Add space for scrollbar */
-}
-
-.selectedCityItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.deleteButton {
-  padding: 5px 10px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.deleteButton:hover {
-  background-color: #e53935;
-}
-
-.continueButtonContainer {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.continueButton {
-  padding: 10px 20px;
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.continueButton:hover {
-  background-color: #1976d2;
+.city-search ul::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
 }

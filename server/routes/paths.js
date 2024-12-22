@@ -279,5 +279,5 @@ router.post('/', pathController.getPaths);
  *         description: Invalid input data.
  */
 router.post('/bestCombination', pathController.getBestPathForDay);
-
+router.post('/add-new-marker', pathController.addNewMarker);
 module.exports = router;
