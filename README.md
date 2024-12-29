@@ -14,7 +14,6 @@ Obecnie dostępne są jedynie punkty znajdujące się na terenie województwa op
 1. [Używane technologie](#używane-technologie)
 2. [Baza danych](#baza-danych)
 3. [Dokumentacja dla HTTP API](#dokumentacja-dla-http-api)
-   - [Online](#online)
    - [Local](#local)
 4. [Flowchart](#flowchart)
 5. [Wymagania](#requirements)
@@ -53,7 +52,7 @@ Dokumentacja jest generowana automatycznie przy użyciu narzędzia `swagger`.
 
 Poniżej znajduje się diagram ilustrujący główny proces działania aplikacji:
 
-![Flowchart](path_to_flowchart_image.png)
+![Flowchart](flowchart/main.png)
 
 ---
 
