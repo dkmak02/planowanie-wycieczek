@@ -16,13 +16,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useMarkers } from "../context/MarkerContext";
 import CitySearch from "../components/CitySearch";
-
-const customIcon = L.icon({
-  iconUrl: "/map_location_marker.png",
-  iconSize: [38, 38],
-  iconAnchor: [19, 38],
-  popupAnchor: [0, -38],
-});
+import { DivIcon } from 'leaflet';
 
 const firstMarkerIcon = L.icon({
   iconUrl: "/map_starter_marker.png",
@@ -119,11 +113,20 @@ const MapSection = () => {
 
     setMarkers((prev) => [...prev, marker]);
   };
-
+    const createCustomIconWithText = (text) => {
+      return new DivIcon({
+        className: "custom-div-icon",
+        html: `<div class="icon-wrapper">
+                 <div class="icon-text">${text}</div>
+               </div>`,
+        iconSize: [30, 42], 
+        iconAnchor: [15, 42], 
+      });
+    };
   if (loading) {
     return <div>Loading map...</div>;
   }
-
+  
   return (
     <DndProvider backend={HTML5Backend}>
        <CitySearch onAddCity={handleAddMarkerFromSearch} />
@@ -142,7 +145,11 @@ const MapSection = () => {
               <LeafletMarker
                 key={index}
                 position={[marker.lat, marker.lng]}
-                icon={index === 0 ? firstMarkerIcon : customIcon}
+                icon={
+                  index === 0
+                    ? firstMarkerIcon
+                    : createCustomIconWithText(marker.name) 
+                }
               >
                 <Popup>
                   <div>{marker.name}</div>

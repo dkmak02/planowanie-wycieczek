@@ -103,7 +103,8 @@ Aby uruchomić projekt, wykonaj następujące kroki:
   [http://localhost:3000](http://localhost:3000)
 ### 7. Zatrzymanie kontenerów:
    ```bash
-   docker-compose down
+   docker-compose down --volumes
    ```
+   Dodanie flgi --volumes umożliwia ponowne załadowania danych geoprzestrzennych do bazy.
 
 

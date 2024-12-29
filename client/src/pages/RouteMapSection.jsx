@@ -18,12 +18,6 @@ const firstMarkerIcon = L.icon({
   iconAnchor: [19, 38],
   popupAnchor: [0, -38],
 });
-const customIcon = L.icon({
-  iconUrl: "/map_location_marker.png",
-  iconSize: [38, 38],
-  iconAnchor: [19, 38],
-  popupAnchor: [0, -38],
-});
 const dayColors = {
   day1: "blue",
   day2: "green",
