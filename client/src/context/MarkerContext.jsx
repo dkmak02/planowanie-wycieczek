@@ -8,28 +8,13 @@ export const MarkerProvider = ({ children }) => {
     return savedMarkers ? JSON.parse(savedMarkers) : [];
   });
 
-  const [filteredData, setFilteredData] = useState(() => {
-    const savedFilteredData = sessionStorage.getItem("filteredData");
-    return savedFilteredData ? JSON.parse(savedFilteredData) : [];
-  });
+  const [filteredData, setFilteredData] = useState(() => []);
 
-  const [allData, setAllData] = useState(() => {
-    const savedAllData = sessionStorage.getItem("allData");
-    return savedAllData ? JSON.parse(savedAllData) : [];
-  });
+  const [allData, setAllData] = useState(() => []);
 
-  // Save to sessionStorage whenever data changes
   useEffect(() => {
     sessionStorage.setItem("markers", JSON.stringify(markers));
   }, [markers]);
-
-  useEffect(() => {
-    sessionStorage.setItem("filteredData", JSON.stringify(filteredData));
-  }, [filteredData]);
-
-  useEffect(() => {
-    sessionStorage.setItem("allData", JSON.stringify(allData));
-  }, [allData]);
 
   return (
     <MarkerContext.Provider

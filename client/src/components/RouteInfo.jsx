@@ -1,5 +1,5 @@
 import React from "react";
-import './../styles/RouteInfo.css'; // Import the new styles
+import './../styles/RouteInfo.css'; 
 
 const RouteInfo = ({ location, onDelete, onEdit }) => {
 

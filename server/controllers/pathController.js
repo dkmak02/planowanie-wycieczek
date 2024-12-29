@@ -50,7 +50,7 @@ exports.getPaths = async (req, res, next) => {
         const startingPoint = await findStartingPoint(markers);
         const paths = await getPathsCombinations(markers);
         const decodedPaths = await decodeAllData(paths);
-        const filteredData = await geneticAlgorithm(decodedPaths,startingPoint, 20, 200,0.1, maxHours, maxDays);
+        const filteredData = await geneticAlgorithm(decodedPaths,startingPoint, 100, 200,0.1, maxHours, maxDays);
         const data = {
             filteredData: filteredData,
             allData: decodedPaths,
@@ -149,4 +149,142 @@ exports.addNewMarker = async (req, res, next) => {
       });
   }
   }
-
+  const getPathsCombinationsDijsktra = async (input) => {
+    const results = [];
+    const inputArray = Object.keys(input);
+  
+    for (let i = 0; i < inputArray.length; i++) {
+      for (let j = 0; j < inputArray.length; j++) {
+        if (i !== j) {
+          const startLat = input[i].lat;
+          const startLon = input[i].lng;
+          const endLat = input[j].lat;
+          const endLon = input[j].lng;
+  
+          try {
+            const result = await db.query(
+              "SELECT * FROM find_shortest_path2($1, $2, $3, $4) order by agg_cost",
+              [startLat, startLon, endLat, endLon]
+            );
+            results.push({
+              start: input[i].name,
+              end: input[j].name,
+              path: result,
+              aggTime: result[result.length - 1].agg_cost,
+              visitTime: (input[j].time || 0)/60,
+            });
+          } catch (error) {
+            console.error('Query failed:', error.message);
+            throw error; 
+          }
+        }
+      }
+    }
+    return results;
+  };
+  const getPathsCombinationsBdDijsktra = async (input) => {
+    const results = [];
+    const inputArray = Object.keys(input);
+  
+    for (let i = 0; i < inputArray.length; i++) {
+      for (let j = 0; j < inputArray.length; j++) {
+        if (i !== j) {
+          const startLat = input[i].lat;
+          const startLon = input[i].lng;
+          const endLat = input[j].lat;
+          const endLon = input[j].lng;
+  
+          try {
+            const result = await db.query(
+              "SELECT * FROM find_shortest_path3($1, $2, $3, $4) order by agg_cost",
+              [startLat, startLon, endLat, endLon]
+            );
+            results.push({
+              start: input[i].name,
+              end: input[j].name,
+              path: result,
+              aggTime: result[result.length - 1].agg_cost,
+              visitTime: (input[j].time || 0)/60,
+            });
+          } catch (error) {
+            console.error('Query failed:', error.message);
+            throw error; 
+          }
+        }
+      }
+    }
+    return results;
+  };
+  const getPathsCombinationsBdAStar = async (input) => {
+    const results = [];
+    const inputArray = Object.keys(input);
+  
+    for (let i = 0; i < inputArray.length; i++) {
+      for (let j = 0; j < inputArray.length; j++) {
+        if (i !== j) {
+          const startLat = input[i].lat;
+          const startLon = input[i].lng;
+          const endLat = input[j].lat;
+          const endLon = input[j].lng;
+  
+          try {
+            const result = await db.query(
+              "SELECT * FROM find_shortest_path4($1, $2, $3, $4) order by agg_cost",
+              [startLat, startLon, endLat, endLon]
+            );
+            results.push({
+              start: input[i].name,
+              end: input[j].name,
+              path: result,
+              aggTime: result[result.length - 1].agg_cost,
+              visitTime: (input[j].time || 0)/60,
+            });
+          } catch (error) {
+            console.error('Query failed:', error.message);
+            throw error; 
+          }
+        }
+      }
+    }
+    return results;
+  };
+exports.testAlgorithms = async (req, res, next) => {
+  const { markers} = req.body;
+  const results = [];
+  let timerStart = Date.now();
+  await getPathsCombinationsDijsktra(markers);
+  let timerEnd = Date.now();
+  let timer = timerEnd - timerStart;
+  results.push({
+    paths: 'Dijsktra',
+    timer: timer,
+  });
+  timerStart = Date.now();
+  await getPathsCombinationsBdDijsktra(markers);
+  timerEnd = Date.now();
+  timer = timerEnd - timerStart;
+  results.push({
+    paths: 'bdDijsktra',
+    timer: timer,
+  });
+  timerStart = Date.now();
+  await getPathsCombinations(markers);
+  timerEnd = Date.now();
+  timer = timerEnd - timerStart;
+  results.push({
+    paths: 'A*',
+    timer: timer,
+  });
+  timerStart = Date.now();
+  await getPathsCombinationsBdAStar(markers);
+  timerEnd = Date.now();
+  timer = timerEnd - timerStart;
+  results.push({
+    paths: 'bdA*',
+    timer: timer,
+  });
+  res.status(200).json({
+    status: 'success',
+    data: results,
+  });
+}

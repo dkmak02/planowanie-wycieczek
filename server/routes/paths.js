@@ -111,69 +111,17 @@ var router = express.Router();
  *                     day1:
  *                       type: array
  *                       items:
- *                         type: object
- *                         properties:
- *                           area:
- *                             type: number
- *                             example: 14.24341856985759
- *                           circuit:
- *                             type: number
- *                             example: 13.266
- *                           paths:
- *                             type: array
- *                             items:
- *                               type: object
- *                               properties:
- *                                 start:
- *                                   type: string
- *                                   example: 1
- *                                 end:
- *                                   type: string
- *                                   example: 2
- *                                 aggTime:
- *                                   type: number
- *                                   example: 0.081818
- *                                 path:
- *                                   type: object
- *                                   properties:
- *                                     agg_cost:
- *                                       type: number
- *                                       example: 0.081818
- *                                     geom_way:
- *                                       type: string
- *                                     geoJSON:
- *                                       type: object
- *                                       properties:
- *                                         coordinates:
- *                                           type: array
- *                                           items:
- *                                             type: array
- *                                             items:
- *                                               type: number
- *                           totalHours:
- *                             type: number
- *                             example: 7
- *                 locations:
- *                   type: array
- *                   description: List of all input locations with additional data.
- *                   items:
- *                     type: object
- *                     properties:
- *                       name:
- *                         type: string
- *                         example: Opole
- *                       lat:
- *                         type: number
- *                         example: 50.678792900000005
- *                       lng:
- *                         type: number
- *                         example: 17.929884436033525
- *                       time:
- *                         type: number
- *                         example: 30
- *                       isStartingPoint:
- *                         type: boolean
- *                         example: true
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                           example: [ "Opole", "3","Opole" ]
+ *                     day2:
+ *                       type: array
+ *                       items:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                           example: [ "Opole", "1","Opole" ]
  *       400:
  *         description: Invalid input data.
  */
@@ -233,51 +181,114 @@ router.post('/', pathController.getPaths);
  *                     day1:
  *                       type: array
  *                       items:
- *                         type: object
- *                         properties:
- *                           area:
- *                             type: number
- *                             example: 14.24341856985759
- *                           circuit:
- *                             type: number
- *                             example: 13.266
- *                           paths:
- *                             type: array
- *                             items:
- *                               type: object
- *                               properties:
- *                                 start:
- *                                   type: string
- *                                   example: 1
- *                                 end:
- *                                   type: string
- *                                   example: 2
- *                                 aggTime:
- *                                   type: number
- *                                   example: 0.081818
- *                                 path:
- *                                   type: object
- *                                   properties:
- *                                     agg_cost:
- *                                       type: number
- *                                       example: 0.081818
- *                                     geom_way:
- *                                       type: string
- *                                     geoJSON:
- *                                       type: object
- *                                       properties:
- *                                         coordinates:
- *                                           type: array
- *                                           items:
- *                                             type: array
- *                                             items:
- *                                               type: number
- *                           totalHours:
- *                             type: number
- *                             example: 7
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                           example: [ "Opole", "3","Opole" ]
+ *                     day2:
+ *                       type: array
+ *                       items:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                           example: [ "Opole", "1","Opole" ]
  *       400:
  *         description: Invalid input data.
  */
 router.post('/bestCombination', pathController.getBestPathForDay);
+/**
+ * @swagger
+ * /paths/add-new-marker:
+ *   post:
+ *     summary: Add a new marker
+ *     tags: [Paths]
+ *     description: Adds a new marker and recalculates paths.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newMarker:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: Name of the new marker.
+ *                     example: NewMarker
+ *                   lat:
+ *                     type: number
+ *                     description: Latitude of the new marker.
+ *                     example: 50.123456
+ *                   lng:
+ *                     type: number
+ *                     description: Longitude of the new marker.
+ *                     example: 17.654321
+ *                   time:
+ *                     type: number
+ *                     description: Visit time at the new marker in minutes.
+ *                     example: 40
+ *                   isStartingPoint:
+ *                     type: boolean
+ *                     description: Indicates if the new marker is the starting point.
+ *                     example: false
+ *               markers:
+ *                 type: array
+ *                 description: List of existing markers.
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       example: ExistingMarker
+ *                     lat:
+ *                       type: number
+ *                       example: 50.678792900000005
+ *                     lng:
+ *                       type: number
+ *                       example: 17.929884436033525
+ *                     time:
+ *                       type: number
+ *                       example: 30
+ *                     isStartingPoint:
+ *                       type: boolean
+ *                       example: true
+ *     responses:
+ *       200:
+ *         description: Successfully added new marker and recalculated paths.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 newPaths:
+ *                   type: array
+ *                   description: Updated paths including the new marker.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       start:
+ *                         type: string
+ *                         example: ExistingMarker
+ *                       end:
+ *                         type: string
+ *                         example: NewMarker
+ *                       path:
+ *                         type: array
+ *                         description: The calculated path data.
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             agg_cost:
+ *                               type: number
+ *                               example: 0.12345
+ *                             geoJSON:
+ *                               type: object
+ *                               description: GeoJSON geometry data.
+ *       400:
+ *         description: Invalid input data.
+ */
 router.post('/add-new-marker', pathController.addNewMarker);
+router.post('/testAlgorithm', pathController.testAlgorithms);
 module.exports = router;

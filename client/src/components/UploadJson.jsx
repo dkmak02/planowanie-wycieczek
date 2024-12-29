@@ -14,8 +14,7 @@ const UploadJson = ({ onClose }) => {
 
   const validateJsonStructure = (jsonData) => {
     if (!jsonData || typeof jsonData !== "object") return false;
-  
-    // Validate `locations` array
+
     if (
       !Array.isArray(jsonData.locations) ||
       !jsonData.locations.every(
@@ -32,8 +31,7 @@ const UploadJson = ({ onClose }) => {
       return false;
     }
     setMarkers(jsonData.locations);
-  
-    // Validate `filteredData`
+
     if (
       !jsonData.filteredData ||
       typeof jsonData.filteredData !== "object" ||
@@ -108,7 +106,7 @@ const UploadJson = ({ onClose }) => {
       return false;
     }
     setAllData(jsonData.allData);
-    return true; // Passed all validations
+    return true; 
   };
   
 

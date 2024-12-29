@@ -8,7 +8,7 @@ const MarkerForm = ({
   setMarkerTime,
   onSubmit,
   onCancel,
-  disableNameChange, // New prop to control name change
+  disableNameChange, 
 }) => {
   const handleSliderChange = (e) => {
     setMarkerTime(Number(e.target.value));

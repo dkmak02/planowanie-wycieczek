@@ -42,7 +42,7 @@ const PathSidebar = ({ routesData, moveRoute, setRoutesData, setVisibleRoutes, v
 
     setClickedDays((prev) => ({
       ...prev,
-      [day]: !prev[day], // Toggle the cut effect
+      [day]: !prev[day], 
     }));
   };
 
@@ -65,8 +65,8 @@ const PathSidebar = ({ routesData, moveRoute, setRoutesData, setVisibleRoutes, v
 
   const calculateTotalTime = (locations) => {
     return locations.reduce((total, location) => {
-      const locationTime = location.time || 0; // `time` in minutes
-      const aggTime = (location.aggTime || 0) * 60; // Convert `aggTime` (in hours) to minutes
+      const locationTime = location.time || 0; 
+      const aggTime = (location.aggTime || 0) * 60; 
       return total + locationTime + aggTime;
     }, 0);
   };
@@ -118,7 +118,7 @@ const PathSidebar = ({ routesData, moveRoute, setRoutesData, setVisibleRoutes, v
     <div className="sidebar">
       <h3>Days</h3>
       {routesData.map(({ day, locations }, dayIndex) => {
-        const totalTime = calculateTotalTime(locations); // Calculate total time for the day
+        const totalTime = calculateTotalTime(locations);
         return (
           <div key={`sidebar-${dayIndex}`} className="day-section">
             <h4 className="day-header">

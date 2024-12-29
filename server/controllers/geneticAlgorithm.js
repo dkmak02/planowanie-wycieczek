@@ -1,20 +1,31 @@
 const { shuffle } = require("lodash");
 const geolib = require('geolib');
+
 const generateInitialPopulation = (points, populationSize, days, startPoint) => {
     const population = Array.from({ length: populationSize }, () => shuffle(points));
-    for (let i = 0; i < days - 1; i++) {
-        population.forEach((route) => {
-            const index = Math.floor(Math.random() * route.length);
-            route.splice(index, 0, startPoint);
-        });
-    }
     population.forEach((route) => {
         route.unshift(startPoint);
         route.push(startPoint);
+    });
+
+    for (let i = 0; i < days - 1; i++) {
+        population.forEach((route) => {
+            let index;
+            do {
+                index = Math.floor(Math.random() * (route.length - 1)) + 1; 
+            } while (
+                route[index - 1] === startPoint || 
+                route[index] === startPoint || 
+                route[index + 1] === startPoint
+            );
+            route.splice(index, 0, startPoint); 
+        });
     }
-    );
+
     return population;
 };
+
+
 const calculateArea = (coordinates) => {
     const polygon = coordinates.map(coord => ({ latitude: coord[1], longitude: coord[0] }));
 
@@ -52,37 +63,46 @@ const createDaysInRoute = (route, startPoint) => {
 
 const calculateFitness = (route, data, startPoint, maxHours, days) => {
     const daysInRoute = createDaysInRoute(route, startPoint);
-    let totalFitness = 0;
     if (daysInRoute.length !== days) {
         return -1000;
     }
-    for(let routes of daysInRoute){
-        if(routes.length < 3){
-            return -1000;
+
+    let totalFitness = 0;
+    const dayTimes = [];
+    for (let routes of daysInRoute) {
+        if (routes.length < 3) {
+            return -1000; 
         }
+
         const allCoordinates = [];
         let dayHours = 0;
+
         for (let i = 0; i < routes.length - 1; i++) {
             const start = routes[i];
             const end = routes[i + 1];
             const path = data.find((item) => item.start === start && item.end === end);
             if (!path) {
-                return 0;
+                return 0; 
             }
             allCoordinates.push(path.path[0].geoJSON.coordinates);
             dayHours += path.aggTime;
         }
-        if (dayHours > maxHours) {
-            return dayHours * 0.7;
-        }
+
+        dayTimes.push(dayHours);
+
+
         const area = calculateArea(allCoordinates.flat());
         const circuit = calculateCircuit(allCoordinates.flat());
 
-        const hoursScore = 1 / (1 + dayHours);
         const areaCircuitScore = area / circuit;
-        totalFitness += hoursScore * 0.4 + areaCircuitScore * 2.9;
-
+        totalFitness += areaCircuitScore * 1.2;
     }
+    const avgTime = dayTimes.reduce((a, b) => a + b, 0) / dayTimes.length;
+    const timeVariance = dayTimes.reduce((sum, time) => sum + Math.pow(time - avgTime, 2), 0) / dayTimes.length;
+    const balanceScore = 1 / (1 + timeVariance); 
+
+    totalFitness += balanceScore * 5; 
+
     return totalFitness;
 };
 
@@ -94,7 +114,6 @@ const selectParents = (population, fitnessScores) => {
     if (validIndividuals.length === 0) {
         throw new Error("No valid individuals with positive fitness scores.");
     }
-
     const totalFitness = validFitnessScores.reduce((acc, score) => acc + score, 0);
     const probabilities = validFitnessScores.map(score => score / totalFitness);
 
@@ -121,25 +140,43 @@ const selectParents = (population, fitnessScores) => {
     return [parent1, parent2];
 };
 const crossover = (parent1, parent2) => {
-    const startPoint = parent1[0];
-    const endPoint = parent1[parent1.length - 1];
+    const parent1Days = createDaysInRoute(parent1, parent1[0]);
+    const parent2Days = createDaysInRoute(parent2, parent2[0]);
 
-    const parent1Core = parent1.slice(1, -1);
-    const parent2Core = parent2.slice(1, -1);
+    const randomDay = Math.floor(Math.random() * parent1Days.length);
+    const child1 = [...parent1Days[randomDay]];
+    const child2 = [...parent2Days[randomDay]]; 
 
-    const midpoint = Math.floor(parent1Core.length / 2);
-    const childCore = [...parent1Core.slice(0, midpoint)];
-
-    parent2Core.forEach((gene) => {
-        if (!childCore.includes(gene)) {
-            childCore.push(gene);
+    child1.splice(0, 1);
+    child1.splice(-1, 1);
+    child2.splice(0, 1);
+    child2.splice(-1, 1);
+    for (let i = 0; i < child2.length; i++) {
+        if (!child1.includes(child2[i])) {
+            child1.push(child2[i]);
         }
-    });
+    }
 
-    const child = [startPoint, ...childCore, endPoint];
 
-    return child;
+    const updatedParent2Days = parent2Days.map((day) =>
+        day.filter((point) => !child1.includes(point))
+    );
+
+    child1.unshift(parent1[0]);
+    child1.push(parent1[0]);
+
+    updatedParent2Days[randomDay] = child1;
+
+    const result = updatedParent2Days.flat();
+    for (let i = 0; i < result.length - 1; i++) {
+        if (result[i] === result[i + 1]) {
+            result.splice(i, 1);
+            i--;
+        }
+    }
+    return result;
 };
+
 
 const mutate = (route, mutationRate) => {
     if (Math.random() < mutationRate) {
