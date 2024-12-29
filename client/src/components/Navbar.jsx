@@ -4,7 +4,7 @@ import UploadJson from "./UploadJson";
 import DownloadJson from "./DownloadJson";
 import "./../styles/Navbar.css";
 
-const Navbar = () => { // Accept routeData as a prop
+const Navbar = () => { 
   const [showUploadForm, setShowUploadForm] = useState(false);
   const location = useLocation();
 
